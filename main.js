@@ -10,23 +10,27 @@ class ProductManager {
 
   addProduct = async (title, description, price, thumbnail, code, stock) => {
     const newProduct = {
+      id: ++ProductManager.id,
       title,
       description,
       price,
       thumbnail,
       code,
       stock,
-      id: ProductManager.id++,
     };
 
     this.products.push(newProduct);
-
     await fs.writeFile(this.path, JSON.stringify(this.products, null, 2));
   };
 
   readProducts = async () => {
-    let response = await fs.readFile(this.path, "utf-8");
-    return JSON.parse(response);
+    try {
+      const response = await fs.readFile(this.path, "utf-8");
+      const arrayProducts = JSON.parse(response);
+      return arrayProducts;
+    } catch {
+      console.log("File Reading Error", error);
+    }
   };
 
   getProducts = async () => {
@@ -78,15 +82,6 @@ items.addProduct(
   200,
   "thumbnail2",
   "abc124",
-  25
-);
-
-items.addProduct(
-  "Producto prueba 3",
-  "Este es un producto prueba 3",
-  200,
-  "thumbnail3",
-  "abc125",
   25
 );
 
