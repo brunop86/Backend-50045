@@ -70,7 +70,7 @@ const items = new ProductManager();
 items.addProduct(
   "Producto prueba 1",
   "Este es un producto prueba 1",
-  200,
+  100,
   "thumbnail1",
   "abc123",
   25
@@ -85,23 +85,95 @@ items.addProduct(
   25
 );
 
+items.addProduct(
+  "Producto prueba 3",
+  "Este es un producto prueba 3",
+  300,
+  "thumbnail3",
+  "abc125",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 4",
+  "Este es un producto prueba 4",
+  400,
+  "thumbnail4",
+  "abc126",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 5",
+  "Este es un producto prueba 5",
+  500,
+  "thumbnail5",
+  "abc127",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 6",
+  "Este es un producto prueba 6",
+  600,
+  "thumbnail6",
+  "abc128",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 7",
+  "Este es un producto prueba 7",
+  700,
+  "thumbnail7",
+  "abc129",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 8",
+  "Este es un producto prueba 8",
+  800,
+  "thumbnail8",
+  "abc130",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 9",
+  "Este es un producto prueba 9",
+  900,
+  "thumbnail9",
+  "abc131",
+  25
+);
+
+items.addProduct(
+  "Producto prueba 10",
+  "Este es un producto prueba 10",
+  1000,
+  "thumbnail10",
+  "abc132",
+  25
+);
+
 // Llamada al método “getProducts”
-items.getProducts();
+//items.getProducts();
 
 // Se evaluará que getProductById devuleva el producto en caso de encontrarlo
-items.getProductsById(1);
-items.getProductsById(5);
+// items.getProductsById(1);
+// items.getProductsById(5);
 
 // Llamada al método para eliminar un item
-items.deleteProducstById(1);
+// items.deleteProducstById(1);
 
 // Actualizar un item
-items.updateProduct({
-  title: "Producto prueba 1",
-  description: "Este es un producto prueba 1",
-  price: 4500,
-  thumbnail: "thumbnail1",
-  code: "abc123",
-  stock: 25,
-  id: 0,
-});
+// items.updateProduct({
+//   title: "Producto prueba 1",
+//   description: "Este es un producto prueba 1",
+//   price: 4500,
+//   thumbnail: "thumbnail1",
+//   code: "abc123",
+//   stock: 25,
+//   id: 0,
+// });
