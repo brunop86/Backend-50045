@@ -66,7 +66,7 @@ class ProductManager {
 // Instancia de la clase “ProductManager”
 const items = new ProductManager();
 
-// Lamada al método “addProduct”
+//Lamada al método “addProduct”
 items.addProduct(
   "Producto prueba 1",
   "Este es un producto prueba 1",
