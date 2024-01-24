@@ -1,28 +1,70 @@
-const express = require("express");
+import express from "express";
+import ProductManager from "../src/controllers/ProductManager.js";
+
 const app = express();
 const PUERTO = 8080;
 
-const ProductManager = require("../src/controllers/ProductManager.js");
-
-const products = new ProductManager();
-const readProducts = products.readProducts();
+const productManager = new ProductManager("./src/models/products.json");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/products", async (req, res) => {
-  let limit = parseInt(req.query.limit);
-  if (!limit) return res.send(await readProducts);
-  let allProducts = await readProducts;
-  let productLimit = allProducts.slice(0, limit);
-  res.send(await productLimit);
+app.get("/api/products", async (req, res) => {
+  try {
+    const limit = req.query.limit;
+    const products = await productManager.getProducts();
+
+    if (limit) {
+      res.json(products.slice(0, limit));
+    } else {
+      res.json(products);
+    }
+  } catch (error) {
+    console.log("Products Loading Error", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
-app.get("/products/:id", async (req, res) => {
-  let id = parseInt(req.params.id);
-  let allProducts = await readProducts;
-  let productsById = allProducts.find((product) => product.id == id);
-  res.send(productsById);
+app.get("/api/products/:pid", async (req, res) => {
+  let id = req.params.pid;
+  try {
+    const product = await productManager.getProductById(parseInt(id));
+    if (!product) {
+      res.json({
+        error: "Item Not Found",
+      });
+    } else {
+      res.json(product);
+    }
+  } catch (error) {
+    console.log("Products Loading Error", error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.post("/api/products", async (req, res) => {
+  const newProduct = req.body;
+  console.log(newProduct);
+
+  try {
+    await productManager.addProduct(newProduct),
+      res.status(201).json({ message: "Product Added Successfully!" });
+  } catch (error) {
+    console.log("Product Saving Error", error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+app.put("/api/products/:pid", async (req, res) => {
+  let id = req.params.pid;
+  const productUpdated = req.body;
+  try {
+    await productManager.updateProduct(parseInt(id), productUpdated);
+    res.json({ message: "Product Upgraded Successfully!" });
+  } catch (error) {
+    console.log("Update Error", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
 app.listen(PUERTO, () => {
