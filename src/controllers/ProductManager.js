@@ -142,16 +142,5 @@ class ProductManager {
       throw error;
     }
   }
-
-  // deleteProducts = async (id) => {
-  //   let products = await this.readFile();
-  //   let existProducts = products.some((item) => item.id === id);
-  //   if (existProducts) {
-  //     const filterProducts = products.filter((item) => item.id != id);
-  //     await this.saveFile(filterProducts);
-  //     return "Item Deleted";
-  //   }
-  //   return "Item Not Found";
-  // };
 }
 export default ProductManager;
