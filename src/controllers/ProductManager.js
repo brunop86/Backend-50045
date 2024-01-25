@@ -109,9 +109,7 @@ class ProductManager {
   async updateProduct(id, updatedProduct) {
     try {
       const arrayProducts = await this.readFile();
-
       const index = arrayProducts.findIndex((item) => item.id === id);
-
       if (index !== -1) {
         arrayProducts[index] = {
           ...arrayProducts[index],
@@ -131,9 +129,7 @@ class ProductManager {
   async deleteProduct(id) {
     try {
       const arrayProducts = await this.readFile();
-
       const index = arrayProducts.findIndex((item) => item.id === id);
-
       if (index !== -1) {
         arrayProducts.splice(index, 1);
         await this.saveFile(arrayProducts);
@@ -146,6 +142,16 @@ class ProductManager {
       throw error;
     }
   }
-}
 
+  // deleteProducts = async (id) => {
+  //   let products = await this.readFile();
+  //   let existProducts = products.some((item) => item.id === id);
+  //   if (existProducts) {
+  //     const filterProducts = products.filter((item) => item.id != id);
+  //     await this.saveFile(filterProducts);
+  //     return "Item Deleted";
+  //   }
+  //   return "Item Not Found";
+  // };
+}
 export default ProductManager;

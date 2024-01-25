@@ -108,16 +108,5 @@
     "stock": 25,
     "category": "category10",
     "thumbnails": []
-  },
-  {
-    "title": "Producto prueba 11",
-    "description": "Descripcion 11",
-    "code": "abc133",
-    "price": 1100,
-    "status": true,
-    "stock": 25,
-    "category": "category11",
-    "thumbnails": [],
-    "id": 11
   }
 ]

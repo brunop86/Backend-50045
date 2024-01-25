@@ -45,7 +45,6 @@ app.get("/api/products/:pid", async (req, res) => {
 app.post("/api/products", async (req, res) => {
   const newProduct = req.body;
   console.log(newProduct);
-
   try {
     await productManager.addProduct(newProduct),
       res.status(201).json({ message: "Product Added Successfully!" });
@@ -65,6 +64,13 @@ app.put("/api/products/:pid", async (req, res) => {
     console.log("Update Error", error);
     res.status(500).json({ error: "Server Error" });
   }
+});
+
+app.delete("/api/products/:pid", async (req, res) => {
+  let id = req.params.pid;
+  const arrayProducts = req.body;
+  await productManager.deleteProduct(parseInt(id), arrayProducts);
+  res.json({ message: "Product Deleted!" });
 });
 
 app.listen(PUERTO, () => {
