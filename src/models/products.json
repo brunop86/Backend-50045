@@ -97,5 +97,16 @@
     "stock": 25,
     "category": "category10",
     "thumbnails": []
+  },
+  {
+    "title": "Producto prueba 2",
+    "description": "Descripcion 2",
+    "code": "abc124",
+    "price": 200,
+    "status": true,
+    "stock": 25,
+    "category": "category2",
+    "thumbnails": [],
+    "id": 11
   }
 ]

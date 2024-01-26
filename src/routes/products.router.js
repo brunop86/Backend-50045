@@ -1,10 +1,10 @@
 import { Router } from "express";
 import ProductManager from "../controllers/ProductManager.js";
 
-const productRouter = Router();
+const ProductRouter = Router();
 const productManager = new ProductManager("./src/models/products.json");
 
-productRouter.get("/api/products", async (req, res) => {
+ProductRouter.get("/api/products", async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await productManager.getProducts();
@@ -19,7 +19,7 @@ productRouter.get("/api/products", async (req, res) => {
   }
 });
 
-productRouter.get("/api/products/:pid", async (req, res) => {
+ProductRouter.get("/api/products/:pid", async (req, res) => {
   let id = req.params.pid;
   try {
     const product = await productManager.getProductById(parseInt(id));
@@ -36,7 +36,7 @@ productRouter.get("/api/products/:pid", async (req, res) => {
   }
 });
 
-productRouter.post("/api/products", async (req, res) => {
+ProductRouter.post("/api/products", async (req, res) => {
   const newProduct = req.body;
   try {
     await productManager.addProduct(newProduct),
@@ -47,7 +47,7 @@ productRouter.post("/api/products", async (req, res) => {
   }
 });
 
-productRouter.put("/api/products/:pid", async (req, res) => {
+ProductRouter.put("/api/products/:pid", async (req, res) => {
   const id = req.params.pid;
   const productUpdated = req.body;
   try {
@@ -59,7 +59,7 @@ productRouter.put("/api/products/:pid", async (req, res) => {
   }
 });
 
-productRouter.delete("/api/products/:pid", async (req, res) => {
+ProductRouter.delete("/api/products/:pid", async (req, res) => {
   const id = req.params.pid;
   try {
     await productManager.deleteProduct(parseInt(id));
@@ -70,4 +70,4 @@ productRouter.delete("/api/products/:pid", async (req, res) => {
   }
 });
 
-export default productRouter;
+export default ProductRouter;

@@ -3,36 +3,68 @@ import { promises as fs } from "fs";
 class CartManager {
   constructor() {
     this.path = "./src/models/carts.json";
+    this.carts = [];
+    this.newId = 0;
+    this.loadCarts;
   }
 
-  static cartId = 0;
-
-  async readCart() {
+  async loadCarts() {
     try {
       const response = await fs.readFile(this.path, "utf-8");
-      const cartProducts = JSON.parse(response);
-      return cartProducts;
+      this.carts = JSON.parse(response);
+      if (this.carts.length > 0) {
+        this.newId = Math.max(...this.carts.map((cart) => cart.id));
+      }
     } catch (error) {
-      console.log("File Reading Rrror", error);
-      throw error;
+      console.error("Cart Loading Error", error);
+      await this.loadCarts();
     }
   }
 
-  async saveCart(cartProduct) {
+  async saveCarts() {
     try {
-      await fs.writeFile(this.path, JSON.stringify(cartProduct, null, 2));
+      await fs.writeFile(this.path, JSON.stringify(this.carts, null, 2));
     } catch (error) {
-      console.log("File saving error", error);
+      console.log("Cart Saving Error", error);
       throw error;
     }
   }
 
-  async addCarts() {
-    const oldCart = await this.readCart();
-    //let id = cartId;
-    const newCart = [{ id: id, products: [] }, ...oldCart];
-    await this.saveCart(newCart);
-    return "New Cart Added";
+  async addCart() {
+    const newCart = {
+      id: ++this.newId,
+      products: [],
+    };
+    this.carts.push(newCart);
+    await this.saveCarts();
+    return newCart;
+  }
+
+  async getCartById(cartId) {
+    try {
+      const cart = this.carts.find((cart) => cart.id === cartId);
+      if (!cart) {
+        throw new Error(`Cart Id ${cartId} Not Found`);
+      }
+      return cart;
+    } catch (error) {
+      console.error("Id Match Error", error);
+      throw error;
+    }
+  }
+
+  async addProductToCart(cartId, productId, quantity = 1) {
+    const cart = await this.getCartById(cartId);
+    const productFound = cart.products.find(
+      (product) => product.id === productId
+    );
+    if (productFound) {
+      productFound.quantity += quantity;
+    } else {
+      cart.products.push({ product: productId, quantity });
+    }
+    await this.saveCarts();
+    return cart;
   }
 }
 
