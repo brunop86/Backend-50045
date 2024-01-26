@@ -1,14 +1,13 @@
 import { Router } from "express";
 import ProductManager from "../controllers/ProductManager.js";
 
-const ProductRouter = Router();
+const productRouter = Router();
 const productManager = new ProductManager("./src/models/products.json");
 
-ProductRouter.get("/api/products", async (req, res) => {
+productRouter.get("/api/products", async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await productManager.getProducts();
-
     if (limit) {
       res.json(products.slice(0, limit));
     } else {
@@ -20,7 +19,7 @@ ProductRouter.get("/api/products", async (req, res) => {
   }
 });
 
-ProductRouter.get("/api/products/:pid", async (req, res) => {
+productRouter.get("/api/products/:pid", async (req, res) => {
   let id = req.params.pid;
   try {
     const product = await productManager.getProductById(parseInt(id));
@@ -37,9 +36,8 @@ ProductRouter.get("/api/products/:pid", async (req, res) => {
   }
 });
 
-ProductRouter.post("/api/products", async (req, res) => {
+productRouter.post("/api/products", async (req, res) => {
   const newProduct = req.body;
-  console.log(newProduct);
   try {
     await productManager.addProduct(newProduct),
       res.status(201).json({ message: "Product Added Successfully!" });
@@ -49,23 +47,27 @@ ProductRouter.post("/api/products", async (req, res) => {
   }
 });
 
-ProductRouter.put("/api/products/:pid", async (req, res) => {
-  let id = req.params.pid;
+productRouter.put("/api/products/:pid", async (req, res) => {
+  const id = req.params.pid;
   const productUpdated = req.body;
   try {
     await productManager.updateProduct(parseInt(id), productUpdated);
     res.json({ message: "Product Upgraded Successfully!" });
   } catch (error) {
     console.log("Update Error", error);
-    res.status(500).json({ error: "Server Error" });
+    res.status(500).json({ error: "Server Internal Error" });
   }
 });
 
-ProductRouter.delete("/api/products/:pid", async (req, res) => {
-  let id = req.params.pid;
-  const arrayProducts = req.body;
-  await productManager.deleteProduct(parseInt(id), arrayProducts);
-  res.json({ message: "Product Deleted!" });
+productRouter.delete("/api/products/:pid", async (req, res) => {
+  const id = req.params.pid;
+  try {
+    await productManager.deleteProduct(parseInt(id));
+    res.json({ message: "Product Deleted!" });
+  } catch (error) {
+    console.error("Delete Error", error);
+    res.status(500).json({ error: "Server Internal Error" });
+  }
 });
 
-export default ProductRouter;
+export default productRouter;

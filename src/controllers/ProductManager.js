@@ -58,6 +58,7 @@ class ProductManager {
       throw error;
     }
   };
+
   async getProducts() {
     try {
       const arrayProducts = await this.readFile();
@@ -72,7 +73,6 @@ class ProductManager {
     try {
       const arrayProducts = await this.readFile();
       const search = arrayProducts.find((item) => item.id === id);
-
       if (!search) {
         console.log("Item Not Found!");
         return null;
