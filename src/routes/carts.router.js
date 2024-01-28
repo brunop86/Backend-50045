@@ -5,8 +5,13 @@ const CartRouter = Router();
 const cartManager = new CartManager("./src/models/carts.json");
 
 CartRouter.post("/api/carts", async (req, res) => {
-  const newCart = await cartManager.addCart();
-  res.json(newCart);
+  try {
+    const newCart = await cartManager.addCart();
+    res.json(newCart);
+  } catch (error) {
+    console.error("New Cart Fail", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 CartRouter.get("/api/carts/:cid", async (req, res) => {
@@ -20,12 +25,12 @@ CartRouter.get("/api/carts/:cid", async (req, res) => {
   }
 
   CartRouter.post("/api/carts/:cid/product/:pid", async (req, res) => {
-    const cardId = parseInt(req.params.cid);
+    const cartId = parseInt(req.params.cid);
     const productId = req.params.pid;
-    const quantity = req.body.quantity || quantity;
+    const quantity = req.params.quantity || 1;
     try {
       const updateCart = await cartManager.addProductToCart(
-        cardId,
+        cartId,
         productId,
         quantity
       );

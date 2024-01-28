@@ -2,10 +2,10 @@ import { promises as fs } from "fs";
 
 class CartManager {
   constructor() {
-    this.path = "./src/models/carts.json";
     this.carts = [];
+    this.path = "./src/models/carts.json";
     this.newId = 0;
-    this.loadCarts;
+    this.loadCarts();
   }
 
   async loadCarts() {
@@ -17,7 +17,7 @@ class CartManager {
       }
     } catch (error) {
       console.error("Cart Loading Error", error);
-      await this.loadCarts();
+      await this.saveCarts();
     }
   }
 
@@ -42,7 +42,7 @@ class CartManager {
 
   async getCartById(cartId) {
     try {
-      const cart = this.carts.find((cart) => cart.id === cartId);
+      const cart = this.carts.find((c) => c.id === cartId);
       if (!cart) {
         throw new Error(`Cart Id ${cartId} Not Found`);
       }
@@ -56,7 +56,7 @@ class CartManager {
   async addProductToCart(cartId, productId, quantity = 1) {
     const cart = await this.getCartById(cartId);
     const productFound = cart.products.find(
-      (product) => product.id === productId
+      (prod) => prod.product === productId
     );
     if (productFound) {
       productFound.quantity += quantity;
