@@ -27,7 +27,7 @@ CartRouter.get("/api/carts/:cid", async (req, res) => {
   CartRouter.post("/api/carts/:cid/product/:pid", async (req, res) => {
     const cartId = parseInt(req.params.cid);
     const productId = req.params.pid;
-    const quantity = req.params.quantity || 1;
+    const quantity = req.body.quantity || 1;
     try {
       const updateCart = await cartManager.addProductToCart(
         cartId,
