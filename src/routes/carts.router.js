@@ -4,7 +4,7 @@ import CartManager from "../controllers/CartManager.js";
 const CartRouter = Router();
 const cartManager = new CartManager("./src/models/carts.json");
 
-CartRouter.post("/api/carts", async (req, res) => {
+CartRouter.post("/", async (req, res) => {
   try {
     const newCart = await cartManager.addCart();
     res.json(newCart);
@@ -14,7 +14,7 @@ CartRouter.post("/api/carts", async (req, res) => {
   }
 });
 
-CartRouter.get("/api/carts/:cid", async (req, res) => {
+CartRouter.get("/:cid", async (req, res) => {
   const cartId = parseInt(req.params.cid);
   try {
     const cart = await cartManager.getCartById(cartId);
@@ -24,7 +24,7 @@ CartRouter.get("/api/carts/:cid", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 
-  CartRouter.post("/api/carts/:cid/product/:pid", async (req, res) => {
+  CartRouter.post("/:cid/product/:pid", async (req, res) => {
     const cartId = parseInt(req.params.cid);
     const productId = req.params.pid;
     const quantity = req.body.quantity || 1;

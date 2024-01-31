@@ -15,8 +15,8 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./src/views");
 
-app.use("/", ProductRouter);
-app.use("/", CartRouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/carts", CartRouter);
 app.use("/", ViewsRouter);
 
 app.listen(PUERTO, () => {
