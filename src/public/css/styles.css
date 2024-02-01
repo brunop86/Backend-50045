@@ -9,6 +9,11 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+h1 {
+  text-align: center;
+  margin: 2rem;
+}
+
 .containerProducts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

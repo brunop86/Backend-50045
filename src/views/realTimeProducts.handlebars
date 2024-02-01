@@ -1,0 +1,13 @@
+<h1>Products in Real Time</h1>
+<div class="containerProducts">
+  {{#each products}}
+    <div class="card" style="width: 25rem;">
+      <div class="card-body">
+        <h2 class="card-title">{{this.title}}</h2>
+        <p class="card-text">{{this.description}}</p>
+        <p class="card-text">${{this.price}}</p>
+        <a href="#" class="btn btn-primary">View Details</a>
+      </div>
+    </div>
+  {{/each}}
+</div>

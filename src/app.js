@@ -1,9 +1,10 @@
 import express from "express";
 import { engine } from "express-handlebars";
+import { Server } from "socket.io";
+import __dirname from "./utils.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
-import { Server } from "socket.io";
 
 const app = express();
 const PUERTO = 8080;
@@ -16,11 +17,11 @@ const io = new Server(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("./src/public"));
+app.use(express.static(__dirname + "/public"));
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
-app.set("views", "./src/views");
+app.set("views", __dirname + "/views");
 
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
