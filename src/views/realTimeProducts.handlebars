@@ -1,13 +1,20 @@
 <h1>Products in Real Time</h1>
-<div class="containerProducts">
-  {{#each products}}
-    <div class="card" style="width: 25rem;">
-      <div class="card-body">
-        <h2 class="card-title">{{this.title}}</h2>
-        <p class="card-text">{{this.description}}</p>
-        <p class="card-text">${{this.price}}</p>
-        <a href="#" class="btn btn-primary">View Details</a>
-      </div>
-    </div>
-  {{/each}}
-</div>
+<div id="containerProducts"></div>
+
+<form>
+  <input type="text" id="title" placeholder="Title" />
+  <input type="text" id="description" placeholder="Description" />
+  <input type="number" id="price" placeholder="Price" />
+  <input type="text" id="code" placeholder="Code" />
+  <input type="number" id="stock" placeholder="Stock" />
+  <input type="text" id="category" placeholder="Category" />
+  <input type="text" id="thumbnails" placeholder="No Image" />
+  <select id="status">
+    <option value="true">Active</option>
+    <option value="false">No Active</option>
+  </select>
+  <button id="btnSend">Send</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/main.js"></script>

@@ -5,13 +5,12 @@ const ViewsRouter = Router();
 const productManager = new ProductManager("./src/models/products.json");
 
 ViewsRouter.get("/", async (req, res) => {
-  const allproducts = await productManager.getProducts();
-  res.render("home", { products: allproducts });
+  const products = await productManager.getProducts();
+  res.render("home", { products });
 });
 
 ViewsRouter.get("/realtimeproducts", async (req, res) => {
-  const allproducts = await productManager.getProducts();
-  res.render("realtimeproducts", { products: allproducts });
+  res.render("realtimeproducts");
 });
 
 export default ViewsRouter;

@@ -13,7 +13,6 @@ class ProductManager {
     description,
     code,
     price,
-    status,
     stock,
     category,
     thumbnails,
@@ -21,10 +20,10 @@ class ProductManager {
     try {
       const arrayProducts = await this.readFile();
 
-      if (!title || !description || !price || !code || !stock || !category) {
-        console.log("All fields are required!");
-        return;
-      }
+      // if (!title || !description || !price || !code || !stock || !category) {
+      //   console.log("All fields are required!");
+      //   return;
+      // }
 
       if (arrayProducts.some((item) => item.code === code)) {
         console.log("This code is already been used.");

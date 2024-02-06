@@ -11,17 +11,6 @@
     "thumbnails": []
   },
   {
-    "id": 3,
-    "title": "Producto prueba 3",
-    "description": "Descripcion 3",
-    "code": "abc125",
-    "price": 300,
-    "status": true,
-    "stock": 25,
-    "category": "category3",
-    "thumbnails": []
-  },
-  {
     "id": 4,
     "title": "Producto prueba 4",
     "description": "Descripcion 4",
@@ -88,25 +77,13 @@
     "thumbnails": []
   },
   {
-    "id": 10,
-    "title": "Producto prueba 10",
-    "description": "Descripcion 10",
-    "code": "abc132",
-    "price": 1000,
+    "title": "Remera",
+    "description": "Adidas",
+    "code": "abc777",
+    "price": "5000",
     "status": true,
-    "stock": 25,
-    "category": "category10",
-    "thumbnails": []
-  },
-  {
-    "title": "Producto prueba 2",
-    "description": "Descripcion 2",
-    "code": "abc124",
-    "price": 200,
-    "status": true,
-    "stock": 25,
-    "category": "category2",
+    "stock": "50",
     "thumbnails": [],
-    "id": 11
+    "id": 10
   }
 ]

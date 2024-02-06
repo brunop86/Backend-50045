@@ -5,6 +5,7 @@ import __dirname from "./utils.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
+import ProductManager from "./controllers/ProductManager.js";
 
 const app = express();
 const PUERTO = 8080;
@@ -27,9 +28,19 @@ app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
 app.use("/", ViewsRouter);
 
-io.on("connection", (socket) => {
+const productManager = new ProductManager("./src/models/products.json");
+
+io.on("connection", async (socket) => {
   console.log("Un cliente se conectó");
-  socket.on("mensaje", (data) => {
-    console.log(data);
+  socket.emit("products", await productManager.getProducts());
+
+  socket.on("deleteProduct", async (id) => {
+    await productManager.deleteProduct(id);
+    io.sockets.emit("products", await productManager.getProducts());
+  });
+
+  socket.on("addProduct", async (product) => {
+    await productManager.addProduct(product);
+    io.sockets.emit("products", await productManager.getProducts());
   });
 });
