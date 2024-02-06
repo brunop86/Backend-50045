@@ -12,11 +12,17 @@ const renderProducts = (products) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `
-                        <h2>${item.title}</h2>
-                        <p>${item.description}</p>
-                        <p>${item.price}</p>
-                        <p>${item.id}</p>
-                        <button>Delete</button>
+                <div class="containerProducts">
+                    <div class="card" style="width: 25rem;">
+                        <div class="card-body">
+                            <h2>${item.title}</h2>
+                            <p>${item.description}</p>
+                            <p>$${item.price}</p>
+                            <p>Id: ${item.id}</p>
+                            <button class="btn btn-primary">Delete</button>
+                        </div>
+                    </div>
+                </div>
                     `;
     containerProducts.appendChild(card);
     card.querySelector("button").addEventListener("click", () => {

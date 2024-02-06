@@ -66,17 +66,6 @@
     "thumbnails": []
   },
   {
-    "id": 9,
-    "title": "Producto prueba 9",
-    "description": "Descripcion 9",
-    "code": "abc131",
-    "price": 900,
-    "status": true,
-    "stock": 25,
-    "category": "category9",
-    "thumbnails": []
-  },
-  {
     "title": "Remera",
     "description": "Adidas",
     "code": "abc777",
