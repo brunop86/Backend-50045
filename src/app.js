@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
@@ -17,14 +18,23 @@ const httpServer = app.listen(PUERTO, () => {
 
 const io = new Server(httpServer);
 
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + "/views");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
-app.set("views", __dirname + "/views");
-app.use(multer({ storage })).single("image");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, __dirname + "./src/public/img");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+app.use(multer({ storage }).single("image"));
 
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
