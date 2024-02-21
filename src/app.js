@@ -6,7 +6,7 @@ import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
 import ProductManager from "./controllers/ProductManager.js";
-import "./database.js";
+import "../src/database.js";
 
 const app = express();
 const PUERTO = 8080;
@@ -24,6 +24,7 @@ app.use(express.static(__dirname + "/public"));
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
+app.use(multer({ storage })).single("image");
 
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
