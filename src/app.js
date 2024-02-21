@@ -6,6 +6,7 @@ import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
 import ProductManager from "./controllers/ProductManager.js";
+import "./database.js";
 
 const app = express();
 const PUERTO = 8080;
