@@ -1,8 +1,8 @@
 import { Router } from "express";
-import ProductManager from "../controllers/ProductManager.js";
+import ProductManager from "../controllers/ProductManagerDB.js";
 
 const ProductRouter = Router();
-const productManager = new ProductManager("./src/models/products.json");
+const productManager = new ProductManager();
 
 ProductRouter.get("/", async (req, res) => {
   try {
@@ -22,7 +22,7 @@ ProductRouter.get("/", async (req, res) => {
 ProductRouter.get("/:pid", async (req, res) => {
   let id = req.params.pid;
   try {
-    const product = await productManager.getProductById(parseInt(id));
+    const product = await productManager.getProductById(id);
     if (!product) {
       res.json({
         error: "Item Not Found",
@@ -51,7 +51,7 @@ ProductRouter.put("/:pid", async (req, res) => {
   const id = req.params.pid;
   const productUpdated = req.body;
   try {
-    await productManager.updateProduct(parseInt(id), productUpdated);
+    await productManager.updateProduct(id, productUpdated);
     res.json({ message: "Product Upgraded Successfully!" });
   } catch (error) {
     console.log("Update Error", error);
@@ -62,7 +62,7 @@ ProductRouter.put("/:pid", async (req, res) => {
 ProductRouter.delete("/:pid", async (req, res) => {
   const id = req.params.pid;
   try {
-    await productManager.deleteProduct(parseInt(id));
+    await productManager.deleteProduct(id);
     res.json({ message: "Product Deleted!" });
   } catch (error) {
     console.error("Delete Error", error);
