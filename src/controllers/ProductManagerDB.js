@@ -4,15 +4,14 @@ class ProductManager {
   async addProduct({
     title,
     description,
-    price,
-    img,
     code,
+    price,
     stock,
     category,
     thumbnails,
   }) {
     try {
-      if (!title || !description || !price || !code || !stock || !category) {
+      if (!title || !description || !code || !price || !stock || !category) {
         console.log("All fields are required!");
         return;
       }
@@ -28,7 +27,6 @@ class ProductManager {
         description,
         code,
         price,
-        img,
         status: true,
         stock,
         category,

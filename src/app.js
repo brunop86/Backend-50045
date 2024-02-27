@@ -6,6 +6,7 @@ import __dirname from "./utils.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
+import MessageModel from "./models/messages.model.js";
 import "../src/database.js";
 
 const app = express();
@@ -41,3 +42,14 @@ app.use("/api/carts", CartRouter);
 app.use("/", ViewsRouter);
 
 const io = new Server(httpServer);
+
+io.on("connection", (socket) => {
+  console.log("New user on-line");
+
+  socket.on("message", async (data) => {
+    await MessageModel.create(data);
+    const messages = await MessageModel.find();
+    console.log(messages);
+    io.sockets.emit("message", messages);
+  });
+});
