@@ -16,6 +16,8 @@ const httpServer = app.listen(PUERTO, () => {
   console.log(`Escuchando en http://localhost:${PUERTO}`);
 });
 
+const io = new Server(httpServer);
+
 //Express-Handlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -24,7 +26,7 @@ app.set("views", __dirname + "/views");
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "./src/public"));
+app.use(express.static(__dirname + "./src/public/"));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -41,8 +43,6 @@ app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
 app.use("/", ViewsRouter);
 
-const io = new Server(httpServer);
-
 io.on("connection", (socket) => {
   console.log("New user on-line");
 
@@ -53,3 +53,4 @@ io.on("connection", (socket) => {
     io.sockets.emit("message", messages);
   });
 });
+

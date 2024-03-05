@@ -1,4 +1,5 @@
 import CartModel from "../models/carts.model.js";
+import ProductModel from "../models/products.model.js";
 
 class CartManager {
   async addCart() {
@@ -42,6 +43,27 @@ class CartManager {
     } catch (error) {
       console.error("Adding Product Error", error);
       throw error;
+    }
+  }
+
+  async deleteProduct(cartId, productId) {
+    try {
+      let prod = await ProductModel.findById(productId);
+
+      return await CartModel.updateOne(
+        { _id: cartId },
+        { $pull: { products: { product: prod } } }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteAllProducts(cartId) {
+    try {
+      return await CartModel.updateOne({ _id: cartId }, { products: [] });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

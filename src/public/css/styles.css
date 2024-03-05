@@ -14,26 +14,11 @@ h1 {
   margin: 2rem;
 }
 
-/* .containerProducts {
+.containerProducts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 40px;
   grid-row-gap: 40px;
   padding: 2rem;
   margin: 2rem;
-} */
-
-.contenedorCards {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.card {
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  margin: 10px;
-  padding: 10px;
-  min-width: 200px;
 }

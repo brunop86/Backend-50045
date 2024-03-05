@@ -42,4 +42,39 @@ CartRouter.get("/:cid", async (req, res) => {
   });
 });
 
+CartRouter.delete("/:cid/product/:pid", async (req, res) => {
+  try {
+    let { cid, pid } = req.params;
+    let cart = await CartManager.deleteProduct(cid, pid);
+
+    res.status(200).send({
+      status: "success",
+      message: "Product Deleted Successfully",
+      payload: cart,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+CartRouter.delete("/:cid", async (req, res) => {
+  try {
+    let { cid } = req.params;
+    let cart = await CartManager.deleteAllProd(cid);
+
+    !cart
+      ? res.status(404).send({
+          status: "error",
+          message: "Cart Not Found",
+        })
+      : res.status(200).send({
+          status: "success",
+          message: "The Cart is Empty",
+          payload: cart,
+        });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default CartRouter;
