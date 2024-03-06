@@ -6,7 +6,6 @@ import __dirname from "./utils.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
-import MessageModel from "./models/messages.model.js";
 import "../src/database.js";
 
 const app = express();
@@ -26,17 +25,8 @@ app.set("views", __dirname + "/views");
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "./src/public"));
+app.use(express.static(__dirname + "/public"));
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, __dirname + "./src/public/img");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-app.use(multer({ storage }).single("image"));
 
 //Routes
 app.use("/api/products", ProductRouter);
@@ -45,11 +35,4 @@ app.use("/", ViewsRouter);
 
 io.on("connection", (socket) => {
   console.log("New user on-line");
-
-  socket.on("message", async (data) => {
-    await MessageModel.create(data);
-    const messages = await MessageModel.find();
-    console.log(messages);
-    io.sockets.emit("message", messages);
-  });
 });
