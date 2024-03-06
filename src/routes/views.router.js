@@ -1,4 +1,8 @@
 import { Router } from "express";
+import ProductManager from "../controllers/ProductManagerDB.js";
+import CartManager from "../controllers/CartManagerDB.js";
+const productManager = new ProductManager();
+const cartManager = new CartManager();
 
 const ViewsRouter = Router();
 
@@ -35,20 +39,19 @@ ViewsRouter.get("/products", async (req, res) => {
 ViewsRouter.get("/carts/:cid", async (req, res) => {
   const cartId = req.params.cid;
   try {
-    const carrito = await cartManager.getCarritoById(cartId);
-    if (!carrito) {
-      console.log("No existe ese carrito con el id");
-      return res.status(404).json({ error: "Carrito no encontrado" });
+    const cart = await cartManager.getCartById(cartId);
+    if (!cart) {
+      console.log("Cart ID Not Found");
+      return res.status(404).json({ error: "Cart Not Found" });
     }
-    const productosEnCarrito = carrito.products.map((item) => ({
+    const productsInCart = cart.products.map((item) => ({
       product: item.product.toObject(),
-      //Lo convertimos a objeto para pasar las restricciones de Exp Handlebars.
       quantity: item.quantity,
     }));
-    res.render("carts", { productos: productosEnCarrito });
+    res.render("carts", { products: productsInCart });
   } catch (error) {
-    console.error("Error al obtener el carrito", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    console.error("Loading Cart Error", error);
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
