@@ -1,5 +1,4 @@
 import CartModel from "../models/carts.model.js";
-import ProductModel from "../models/products.model.js";
 
 class CartManager {
   async addCart() {
@@ -46,24 +45,76 @@ class CartManager {
     }
   }
 
-  async deleteProduct(cartId, productId) {
+  async deleteProductCart(cartId, productId) {
     try {
-      let prod = await ProductModel.findById(productId);
-
-      return await CartModel.updateOne(
-        { _id: cartId },
-        { $pull: { products: { product: prod } } }
+      const cart = await CartModel.findById(cartId);
+      if (!cart) {
+        throw new Error("Cart Not Found");
+      }
+      cart.products = cart.products.filter(
+        (item) => item.product._id.toString() !== productId
       );
+      await cart.save();
+      return cart;
     } catch (error) {
-      console.log(error);
+      console.error("Cart Deleting Error", error);
+      throw error;
     }
   }
 
-  async deleteAllProducts(cartId) {
+  async updateCart(cartId, updatedProducts) {
     try {
-      return await CartModel.updateOne({ _id: cartId }, { products: [] });
+      const cart = await CartModel.findById(cartId);
+      if (!cart) {
+        throw new Error("Cart Not Found");
+      }
+      cart.products = updatedProducts;
+      cart.markModified("products");
+      await cart.save();
+      return cart;
     } catch (error) {
-      console.log(error);
+      console.error("Update Cart Error", error);
+      throw error;
+    }
+  }
+
+  async updateQuantityProduct(cartId, productId, newQuantity) {
+    try {
+      const cart = await CartModel.findById(cartId);
+      if (!cart) {
+        throw new Error("Cart Not Found");
+      }
+      const productIndex = cart.products.findIndex(
+        (item) => item.product._id.toString() === productId
+      );
+      if (productIndex !== -1) {
+        cart.products[productIndex].quantity = newQuantity;
+        cart.markModified("products");
+        await cart.save();
+        return cart;
+      } else {
+        throw new Error("Product Not Found");
+      }
+    } catch (error) {
+      console.error("Quantity Update Error", error);
+      throw error;
+    }
+  }
+
+  async emptyCart(cartId) {
+    try {
+      const cart = await CartModel.findByIdAndUpdate(
+        cartId,
+        { products: [] },
+        { new: true }
+      );
+      if (!cart) {
+        throw new Error("Cart Not Found");
+      }
+      return cart;
+    } catch (error) {
+      console.error("Error", error);
+      throw error;
     }
   }
 }
