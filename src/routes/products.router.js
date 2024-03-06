@@ -23,10 +23,10 @@ ProductRouter.get("/", async (req, res) => {
       hasPrevPage: products.hasPrevPage,
       hasNextPage: products.hasNextPage,
       prevLink: products.hasPrevPage
-        ? `/api/products?limit=${limit}&page=${productos.prevPage}&sort=${sort}&query=${query}`
+        ? `/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}`
         : null,
       nextLink: products.hasNextPage
-        ? `/api/products?limit=${limit}&page=${productos.nextPage}&sort=${sort}&query=${query}`
+        ? `/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}`
         : null,
     });
   } catch (error) {
@@ -36,7 +36,7 @@ ProductRouter.get("/", async (req, res) => {
 });
 
 ProductRouter.get("/:pid", async (req, res) => {
-  let id = req.params.pid;
+  const id = req.params.pid;
   try {
     const product = await productManager.getProductById(id);
     if (!product) {

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import CartManager from "../controllers/CartManagerDB.js";
+import CartModel from "../models/carts.model.js";
 
 const CartRouter = Router();
 const cartManager = new CartManager();
@@ -17,8 +18,12 @@ CartRouter.post("/", async (req, res) => {
 CartRouter.get("/:cid", async (req, res) => {
   const cartId = req.params.cid;
   try {
-    const cart = await cartManager.getCartById(cartId);
-    res.json(cart.products);
+    const cart = await CartModel.findById(cartId);
+    if (!cart) {
+      console.log("Item Not found");
+      return res.status(404).json({ error: "Cart Not Found" });
+    }
+    return res.json(cart.products);
   } catch (error) {
     console.error("Cart Loading Error", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -46,20 +51,17 @@ CartRouter.delete("/:cid/product/:pid", async (req, res) => {
   try {
     const cartId = req.params.cid;
     const productId = req.params.pid;
-    const updatedCart = await cartManager.eliminarProductoDelCarrito(
-      cartId,
-      productId
-    );
+    const updatedCart = await cartManager.deleteProductCart(cartId, productId);
     res.json({
       status: "success",
-      message: "Producto eliminado del carrito correctamente",
+      message: "Product Deleted",
       updatedCart,
     });
   } catch (error) {
-    console.error("Error al eliminar el producto del carrito", error);
+    console.error("Deleting Product Error", error);
     res.status(500).json({
       status: "error",
-      error: "Error interno del servidor",
+      error: "Internal Server Error",
     });
   }
 });
@@ -67,19 +69,14 @@ CartRouter.delete("/:cid/product/:pid", async (req, res) => {
 CartRouter.put("/:cid", async (req, res) => {
   const cartId = req.params.cid;
   const updatedProducts = req.body;
-  // Debes enviar un arreglo de productos en el cuerpo de la solicitud
-
   try {
-    const updatedCart = await cartManager.actualizarCarrito(
-      cartId,
-      updatedProducts
-    );
+    const updatedCart = await cartManager.updateCart(cartId, updatedProducts);
     res.json(updatedCart);
   } catch (error) {
-    console.error("Error al actualizar el carrito", error);
+    console.error("Upgrade Cart Error", error);
     res.status(500).json({
       status: "error",
-      error: "Error interno del servidor",
+      error: "Internal Server Error",
     });
   }
 });
@@ -89,26 +86,21 @@ CartRouter.put("/:cid/product/:pid", async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;
     const newQuantity = req.body.quantity;
-
-    const updatedCart = await cartManager.actualizarCantidadDeProducto(
+    const updatedCart = await cartManager.updateQuantityProduct(
       cartId,
       productId,
       newQuantity
     );
-
     res.json({
       status: "success",
-      message: "Cantidad del producto actualizada correctamente",
+      message: "Product Quantity Upgraded",
       updatedCart,
     });
   } catch (error) {
-    console.error(
-      "Error al actualizar la cantidad del producto en el carrito",
-      error
-    );
+    console.error("Upgrade Quantity Error", error);
     res.status(500).json({
       status: "error",
-      error: "Error interno del servidor",
+      error: "Internal Server Error",
     });
   }
 });
@@ -116,20 +108,17 @@ CartRouter.put("/:cid/product/:pid", async (req, res) => {
 CartRouter.delete("/:cid", async (req, res) => {
   try {
     const cartId = req.params.cid;
-
-    const updatedCart = await cartManager.vaciarCarrito(cartId);
-
+    const updatedCart = await cartManager.emptyCart(cartId);
     res.json({
       status: "success",
-      message:
-        "Todos los productos del carrito fueron eliminados correctamente",
+      message: "The Cart is Empty",
       updatedCart,
     });
   } catch (error) {
-    console.error("Error al vaciar el carrito", error);
+    console.error("Cart Cleaning Error", error);
     res.status(500).json({
       status: "error",
-      error: "Error interno del servidor",
+      error: "Internal Server Error",
     });
   }
 });

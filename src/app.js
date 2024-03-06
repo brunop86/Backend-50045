@@ -26,7 +26,7 @@ app.set("views", __dirname + "/views");
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "./src/public/"));
+app.use(express.static(__dirname + "./src/public"));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -53,4 +53,3 @@ io.on("connection", (socket) => {
     io.sockets.emit("message", messages);
   });
 });
-
