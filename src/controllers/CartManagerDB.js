@@ -16,18 +16,18 @@ class CartManager {
     try {
       const cart = await CartModel.findById(cartId);
       if (!cart) {
-        throw new Error(`Cart Id ${cartId} Not Found`);
+        console.log("No existe ese carrito con el id");
+        return null;
       }
       return cart;
     } catch (error) {
       console.error("Id Match Error", error);
-      throw error;
     }
   }
 
   async addProductToCart(cartId, productId, quantity = 1) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await this.getCartById(cartId);
       const productFound = cart.products.find(
         (item) => item.product.toString() === productId
       );
