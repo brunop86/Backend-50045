@@ -20,12 +20,12 @@ SessionsRouter.post(
 
     req.session.login = true;
 
-    res.redirect("/profile");
+    res.redirect("/products");
   }
 );
 
 SessionsRouter.get("/faillogin", async (req, res) => {
-  res.send({ error: "Fallo todoooooo el login" });
+  res.send({ error: "Login Failure" });
 });
 
 //Logout

@@ -55,7 +55,6 @@ ViewsRouter.get("/carts/:cid", async (req, res) => {
   }
 });
 
-// Ruta para el formulario de login
 ViewsRouter.get("/login", (req, res) => {
   if (req.session.login) {
     return res.redirect("/profile");
@@ -63,7 +62,6 @@ ViewsRouter.get("/login", (req, res) => {
   res.render("login");
 });
 
-// Ruta para el formulario de registro
 ViewsRouter.get("/register", (req, res) => {
   if (req.session.login) {
     return res.redirect("/profile");
@@ -71,7 +69,6 @@ ViewsRouter.get("/register", (req, res) => {
   res.render("register");
 });
 
-// Ruta para la vista de perfil
 ViewsRouter.get("/profile", (req, res) => {
   if (!req.session.login) {
     return res.redirect("/login");
