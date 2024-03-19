@@ -19,13 +19,12 @@ UserRouter.post("/", async (req, res) => {
       password: createHash(password),
       rol: "user",
     });
-
     req.session.login = true;
     req.session.user = { ...newUser._doc };
     res.redirect("/products");
   } catch (error) {
-    console.log("Error creating the user: ", error);
-    res.status(500).send({ error: "Error saving the new user" });
+    console.log("User Register Error", error);
+    res.status(500).send({ error: "Error Saving New User" });
   }
 });
 
