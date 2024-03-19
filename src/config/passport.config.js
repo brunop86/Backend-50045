@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import UserModel from "../models/user.model.js";
 import { createHash, isValidPassword } from "../utils/hashbcryp.js";
+import GitHubStrategy from "passport-github2";
 
 const LocalStrategy = local.Strategy;
 
@@ -66,6 +67,38 @@ const initializePassport = () => {
     let user = await UserModel.findById({ _id: id });
     done(null, user);
   });
+
+  passport.use(
+    "github",
+    new GitHubStrategy(
+      {
+        clientID: "Iv1.0487e110a60cb593",
+        clientSecret: "a3e92939b3e80f95f1970dc1c39147fe2cb6fbf7",
+        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        console.log(profile);
+        try {
+          let user = await UserModel.findOne({ email: profile._json.email });
+          if (!user) {
+            let newUser = {
+              first_name: profile._json.name,
+              last_name: "secret",
+              age: 37,
+              email: profile._json.email,
+              password: "secret",
+            };
+            let result = await UserModel.create(newUser);
+            done(null, result);
+          } else {
+            done(null, user);
+          }
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
 };
 
 export default initializePassport;

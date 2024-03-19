@@ -1,8 +1,5 @@
-<h2>My Profile</h2>
-<p>Welcome!, {{user.first_name}} {{user.last_name}}</p>
-<p>Email: {{user.email}}</p>
-<p>Age: {{user.age}}</p>
-<a class="btn btn-primary" href="/api/sessions/logout">Logout</a>
+<h2 class="m-4">My Profile</h2>
+<p class="m-4">Welcome, {{user.first_name}} {{user.last_name}}!</p>
 
 <h1>Products List</h1>
 <div class="containerProducts">
@@ -20,10 +17,12 @@
   {{/each}}
 </div>
 {{#if hasPrevPage}}
-  <a href="/products?page={{prevPage}}"> Prev</a>
+  <a class="btn btn-primary m-2" href="/products?page={{prevPage}}"> Prev</a>
 {{/if}}
 {{#if hasNextPage}}
-  <a href="/products?page={{nextPage}}"> Next </a>
+  <a class="btn btn-primary m-2" href="/products?page={{nextPage}}"> Next </a>
 {{/if}}
 
-<p>Page {{currentPage}} of {{totalPages}} </p>
+<p class="m-4">Page {{currentPage}} of {{totalPages}} </p>
+
+<a class="btn btn-primary m-2" href="/api/sessions/logout">Logout</a>
