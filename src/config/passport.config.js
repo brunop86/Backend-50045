@@ -15,7 +15,7 @@ const initializePassport = () => {
         usernameField: "email",
       },
       async (req, username, password, done) => {
-        const { first_name, last_name, email, age } = req.body;
+        const { first_name, last_name, email } = req.body;
 
         try {
           let user = await UserModel.findOne({ email: email });
@@ -24,7 +24,6 @@ const initializePassport = () => {
             first_name,
             last_name,
             email,
-            age,
             password: createHash(password),
           };
 
@@ -47,7 +46,7 @@ const initializePassport = () => {
         try {
           const user = await UserModel.findOne({ email });
           if (!user) {
-            console.log("Este usuario no existeeeeeee ahhh");
+            console.log("User Not Found!");
             return done(null, false);
           }
           if (!isValidPassword(password, user)) return done(null, false);
