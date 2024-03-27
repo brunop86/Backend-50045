@@ -15,7 +15,6 @@ SessionsRouter.post(
     req.session.user = {
       first_name: req.user.first_name,
       last_name: req.user.last_name,
-      age: req.user.age,
       email: req.user.email,
     };
     req.session.login = true;
