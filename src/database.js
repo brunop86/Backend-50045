@@ -10,7 +10,7 @@ mongoose
   .then(() => console.log("Connected  to DB"))
   .catch((error) => console.log("Connection Error"));
 
-// class DataBase {
+// export default class DataBase {
 //   static #instance;
 
 //   constructor() {
@@ -19,14 +19,12 @@ mongoose
 
 //   static getInstance() {
 //     if (this.#instance) {
-//       console.log("Conexión previa");
+//       console.log("Already Connected");
 //       return this.#instance;
 //     }
 
 //     this.#instance = new DataBase();
-//     console.log("Conexión exitosa");
+//     console.log("Connected");
 //     return this.#instance;
 //   }
 // }
-
-//export default DataBase.getInstance;

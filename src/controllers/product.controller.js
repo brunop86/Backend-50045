@@ -4,20 +4,83 @@ const productRepository = new ProductRepository();
 class ProductController {
   async getProducts(req, res) {
     try {
-      const products = await productRepository.loadAll();
-      res.status(200).json(products);
+      const { limit = 10, page = 1, sort, query } = req.query;
+      const products = await productRepository.getProducts({
+        limit: parseInt(limit),
+        page: parseInt(page),
+        sort,
+        query,
+      });
+      res.json({
+        status: "success",
+        payload: products,
+        totalPages: products.totalPages,
+        prevPage: products.prevPage,
+        nextPage: products.nextPage,
+        page: products.page,
+        hasPrevPage: products.hasPrevPage,
+        hasNextPage: products.hasNextPage,
+        prevLink: products.hasPrevPage
+          ? `/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}`
+          : null,
+        nextLink: products.hasNextPage
+          ? `/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}`
+          : null,
+      });
     } catch (error) {
-      res.status(500).json("Server Error");
+      console.log("Products Loading Error", error);
+      res.status(500).json({ error: "Server Error" });
     }
   }
 
-  async postProducts(req, res) {
+  async getProductById(req, res) {
+    const id = req.params.pid;
+    try {
+      const product = await productRepository.findById(id);
+      if (!product) {
+        res.json({
+          error: "Item Not Found",
+        });
+      } else {
+        res.json(product);
+      }
+    } catch (error) {
+      console.log("Products Loading Error", error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+
+  async addProduct(req, res) {
     const newProduct = req.body;
     try {
-      await productRepository.crear(newProduct);
-      res.status(200).send("Product Added");
+      await productRepository.addProduct(newProduct),
+        res.status(201).json({ message: "Product Added Successfully!" });
     } catch (error) {
-      res.status(500).json("Server Error");
+      console.log("Product Saving Error", error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+
+  async updateProduct(req, res) {
+    const id = req.params.pid;
+    const productUpdated = req.body;
+    try {
+      await productRepository.updateProduct(id, productUpdated);
+      res.json({ message: "Product Upgraded Successfully!" });
+    } catch (error) {
+      console.log("Update Error", error);
+      res.status(500).json({ error: "Server Internal Error" });
+    }
+  }
+
+  async deleteProduct(req, res) {
+    const id = req.params.pid;
+    try {
+      await productRepository.deleteProduct(id);
+      res.json({ message: "Product Deleted!" });
+    } catch (error) {
+      console.error("Delete Error", error);
+      res.status(500).json({ error: "Server Internal Error" });
     }
   }
 }
