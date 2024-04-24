@@ -1,8 +1,8 @@
 import { Router } from "express";
-import ProductManager from "../controllers/ProductManagerDB.js";
-import CartManager from "../controllers/CartManagerDB.js";
-const productManager = new ProductManager();
-const cartManager = new CartManager();
+//import ProductManager from "../controllers/ProductManagerDB.js";
+//import CartManager from "../controllers/CartManagerDB.js";
+//const productManager = new ProductManager();
+//const cartManager = new CartManager();
 
 const ViewsRouter = Router();
 

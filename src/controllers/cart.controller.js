@@ -1,5 +1,10 @@
 import CartRepository from "../repositories/carts.repository.js";
 const cartRepository = new CartRepository();
+import ProductRepository from "../repositories/products.repository.js";
+const productRepository = new ProductRepository();
+import TicketModel from "../models/tickets.model.js";
+import UserModel from "../models/user.model.js";
+import { generateUniqueCode, calculateTotal } from "../utils/cartutils.js";
 
 class CartController {
   async addCart(req, res) {
@@ -123,6 +128,43 @@ class CartController {
         status: "error",
         error: "Internal Server Error",
       });
+    }
+  }
+
+  async finishPurchase(req, res) {
+    const cartId = req.params.cid;
+    try {
+      const cart = await cartRepository.getCartById(cartId);
+      const products = cart.products;
+      const productsNotAvaliable = [];
+      for (const item of products) {
+        const productId = item.product;
+        const product = await productRepository.addProductToCart(productId);
+        if (product.stock >= item.quantity) {
+          product.stock -= item.quantity;
+          await product.save();
+        } else {
+          productsNotAvaliable.push(productId);
+        }
+      }
+      const userWithCart = await UserModel.findOne({ cart: cartId });
+      const ticket = new TicketModel({
+        code: generateUniqueCode(),
+        purchase_datetime: new Date(),
+        amount: calculateTotal(cart.products),
+        purchaser: userWithCart.email,
+      });
+      await ticket.save();
+      cart.products = cart.products.filter((item) =>
+        productsNotAvaliable.some((productId) => productId.equals(item.product))
+      );
+
+      await cart.save();
+
+      res.status(200).json({ productsNotAvaliable });
+    } catch (error) {
+      console.error("Purchase Error", error);
+      res.status(500).json({ error: "Server Error" });
     }
   }
 }

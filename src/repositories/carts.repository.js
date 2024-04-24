@@ -16,7 +16,7 @@ class CartRepository {
     try {
       const cart = await CartModel.findById(cartId);
       if (!cart) {
-        console.log("No existe ese carrito con el id");
+        console.log("Cart ID Not Found");
         return null;
       }
       return cart;
