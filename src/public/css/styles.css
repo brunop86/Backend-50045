@@ -22,6 +22,7 @@ h1 {
   padding: 2rem;
   margin: 2rem;
 }
+
 /* NAVBAR */
 
 .nav {
@@ -48,4 +49,60 @@ h1 {
 }
 .nav .main-menu a:hover {
   color: grey;
+}
+
+/* BOTONES NAVBAR*/
+
+.btnLogin,
+.btnCarrito {
+  padding: 0.25rem 1.5rem;
+  border-radius: 0.25rem;
+  background-color: #244ced;
+  color: white;
+  border: solid 1px #244ced;
+  font-size: 1.2rem;
+  padding: 0.1rem 1rem;
+  margin-left: 1rem;
+}
+.btnLogin:hover,
+.btnCarrito:hover {
+  background-color: white;
+  color: #0075ff;
+}
+.buscador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* LOGIN */
+
+h1 {
+  text-align: center;
+  margin-top: 10rem;
+}
+
+.form {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.inputLogin {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
