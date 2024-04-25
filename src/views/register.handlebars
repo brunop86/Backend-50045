@@ -1,15 +1,17 @@
-<form action="/api/users" method="post">
-  <label class="p-2" for="first_name">First Name:</label>
-  <input type="text" id="first_name" name="first_name" required />
+<h1>Register</h1>
+
+<form class="form" action="/api/users/register" method="post">
+  <label for="first_name">First Name:</label>
+  <input class="inputLogin" type="text" id="first_name" name="first_name" required />
   <br />
-  <label class="p-2" for="last_name">Last Name:</label>
-  <input type="text" id="last_name" name="last_name" required />
+  <label for="last_name">Last Name:</label>
+  <input class="inputLogin" type="text" id="last_name" name="last_name" required />
   <br />
-  <label class="p-2" for="email">Email:</label>
-  <input type="email" id="email" name="email" required />
+  <label for="email">Email:</label>
+  <input class="inputLogin" type="email" id="email" name="email" required />
   <br />
-  <label class="p-2" for="password">Password:</label>
-  <input type="password" id="password" name="password" required />
+  <label for="password">Password:</label>
+  <input class="inputLogin" type="password" id="password" name="password" required />
   <br />
-  <button class="btn btn-primary m-2" type="submit">Register</button>
+  <button class="btn btn-primary" type="submit">Register</button>
 </form>
