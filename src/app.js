@@ -8,7 +8,6 @@ import ViewsRouter from "./routes/views.router.js";
 import UserRouter from "./routes/user.router.js";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
-import session from "express-session";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import cors from "cors"

@@ -22,3 +22,30 @@ h1 {
   padding: 2rem;
   margin: 2rem;
 }
+/* NAVBAR */
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-around;
+  width: 100vw;
+  min-height: 8rem;
+}
+.nav .logo img {
+  width: 8rem;
+}
+.nav .main-menu li {
+  font-size: 1.2rem;
+  list-style: none;
+  display: inline;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.nav .main-menu a {
+  color: white;
+  text-decoration: none;
+}
+.nav .main-menu a:hover {
+  color: grey;
+}
