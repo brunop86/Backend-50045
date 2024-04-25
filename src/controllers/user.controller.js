@@ -1,4 +1,4 @@
-import UserModel from "../models/users.model.js";
+import UserModel from "../models/user.model.js";
 import CartModel from "../models/carts.model.js";
 import jwt from "jsonwebtoken";
 import { createHash, isValidPassword } from "../utils/hashbcryp.js";

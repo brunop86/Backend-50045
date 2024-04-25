@@ -23,5 +23,4 @@ const calculateTotal = (products) => {
   return total;
 };
 
-export default generateUniqueCode;
-calculateTotal;
+export default { generateUniqueCode, calculateTotal };

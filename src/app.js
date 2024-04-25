@@ -1,18 +1,17 @@
 import express from "express";
-import multer from "multer";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
 import ProductRouter from "./routes/products.router.js";
 import CartRouter from "./routes/carts.router.js";
 import ViewsRouter from "./routes/views.router.js";
-import SessionsRouter from "./routes/sessions.router.js";
 import UserRouter from "./routes/user.router.js";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import cors from "cors"
 import "../src/database.js";
 
 const app = express();
@@ -34,28 +33,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
-app.use(
-  session({
-    secret: "secretCoder",
-    resave: true,
-    saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://brunox86:coderhouse@cluster0.y6jrdwz.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0",
-      ttl: 100,
-    }),
-  })
-);
-initializePassport();
+app.use(cors());
+
+//Passport
 app.use(passport.initialize());
-app.use(passport.session());
+initializePassport();
+app.use(cookieParser());
+
+//AuthMiddleware
+import authMiddleware from "./middleware/authmiddleware.js";
+app.use(authMiddleware);
 
 //Routes
 app.use("/api/products", ProductRouter);
 app.use("/api/carts", CartRouter);
-app.use("/", ViewsRouter);
 app.use("/api/users", UserRouter);
-app.use("/api/sessions", SessionsRouter);
+app.use("/", ViewsRouter);
 
 io.on("connection", (socket) => {
   console.log("New user on-line");

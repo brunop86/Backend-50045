@@ -4,7 +4,8 @@ import ProductRepository from "../repositories/products.repository.js";
 const productRepository = new ProductRepository();
 import TicketModel from "../models/tickets.model.js";
 import UserModel from "../models/user.model.js";
-import { generateUniqueCode, calculateTotal } from "../utils/cartutils.js";
+import generateUniqueCode from "../utils/cartutils.js";
+import calculateTotal from "../utils/cartutils.js";
 
 class CartController {
   async addCart(req, res) {
