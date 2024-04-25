@@ -2,6 +2,9 @@ import { Router } from "express";
 const CartRouter = Router();
 import CartController from "../controllers/cart.controller.js";
 const cartController = new CartController();
+import authMiddleware from "../middleware/authmiddleware.js";
+
+CartRouter.use(authMiddleware);
 
 CartRouter.post("/", cartController.addCart);
 CartRouter.get("/:cid", cartController.getCartById);

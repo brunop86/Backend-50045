@@ -1,31 +1,21 @@
 import { Router } from "express";
 import passport from "passport";
-import { createHash } from "../utils/hashbcryp.js";
-import UserModel from "../models/user.model.js";
-
+import UserController from "../controllers/user.controller.js";
+const userController = new UserController();
 const UserRouter = Router();
 
-UserRouter.post(
-  "/",
-  passport.authenticate("register", { failureRedirect: "/failedregister" }),
-  async (req, res) => {
-    if (!req.user) return res.status(400).send({ status: "error" });
-
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      age: req.user.age,
-      email: req.user.email,
-    };
-
-    req.session.login = true;
-
-    res.redirect("/profile");
-  }
+UserRouter.post("/register", userController.register);
+UserRouter.post("/login", userController.login);
+UserRouter.get(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  userController.profile
 );
-
-UserRouter.get("/failedregister", (req, res) => {
-  res.send({ error: "Register Failed!" });
-});
+UserRouter.post("/logout", userController.logout.bind(userController));
+UserRouter.get(
+  "/admin",
+  passport.authenticate("jwt", { session: false }),
+  userController.admin
+);
 
 export default UserRouter;

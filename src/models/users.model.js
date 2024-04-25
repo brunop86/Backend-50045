@@ -3,17 +3,25 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
   first_name: {
     type: String,
-    //required: true,
+    required: true,
   },
   last_name: {
     type: String,
-    //required: true,
+    required: true,
   },
   email: {
     type: String,
-    //required: true,
+    required: true,
     index: true,
     unique: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cart",
   },
   password: {
     type: String,
@@ -21,8 +29,8 @@ const userSchema = mongoose.Schema({
   },
   rol: {
     type: String,
-    //enum: ["admin", "user"],
-    //default: "user",
+    enum: ["admin", "user"],
+    default: "user",
     //required: true,
   },
 });

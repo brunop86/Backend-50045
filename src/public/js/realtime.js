@@ -8,7 +8,7 @@ const renderProducts = (products) => {
   const containerProducts = document.getElementById("containerProducts");
   containerProducts.innerHTML = "";
 
-  products.forEach((item) => {
+  products.docs.forEach((item) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `

@@ -30,6 +30,7 @@ class ProductRepository {
         status: true,
         stock,
         category,
+        status: true,
         thumbnails: thumbnails || [],
       });
       await newProduct.save();

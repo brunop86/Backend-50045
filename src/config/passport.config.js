@@ -1,4 +1,7 @@
 import passport from "passport";
+import jwt from "passport-jwt";
+const JWTStrategy = jwt.Strategy;
+const ExtractJwt = jwt.ExtractJwt;
 import local from "passport-local";
 import UserModel from "../models/user.model.js";
 import { createHash, isValidPassword } from "../utils/hashbcryp.js";
