@@ -8,7 +8,7 @@ const ViewsRouter = Router();
 
 ViewsRouter.get(
   "/products",
-  checkUserRole(["usuario"]),
+  checkUserRole(["user"]),
   passport.authenticate("jwt", { session: false }),
   viewsController.renderProducts
 );
