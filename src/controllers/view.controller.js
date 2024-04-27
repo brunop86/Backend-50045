@@ -12,6 +12,7 @@ class ViewController {
       const totalPages = Math.ceil(totalProducts / limit);
       const hasPrevPage = page > 1;
       const hasNextPage = page < totalPages;
+
       const newArray = products.map((product) => {
         const { _id, ...rest } = product.toObject();
         return { id: _id, ...rest };
@@ -19,7 +20,7 @@ class ViewController {
       const cartId = req.user.cart.toString();
 
       res.render("products", {
-        productos: newArray,
+        products: newArray,
         hasPrevPage,
         hasNextPage,
         prevPage: page > 1 ? parseInt(page) - 1 : null,
