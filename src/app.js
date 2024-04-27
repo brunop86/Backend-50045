@@ -41,7 +41,7 @@ app.use("/api/users", UsersRouter);
 app.use("/", ViewsRouter);
 
 const httpServer = app.listen(PUERTO, () => {
-  console.log(`Server listening at Port ${PUERTO}`);
+  console.log(`Server listening at http://localhost:${PUERTO}`);
 });
 
 //Websockets: 

@@ -1,7 +1,7 @@
 const express = require("express");
 const ViewRouter = express.Router();
-const ViewsController = require("../controllers/view.controller.js");
-const viewsController = new ViewsController();
+const ViewController = require("../controllers/view.controller.js");
+const viewController = new ViewController();
 const checkUserRole = require("../middleware/checkrole.js");
 const passport = require("passport");
 
@@ -9,18 +9,18 @@ ViewRouter.get(
   "/products",
   checkUserRole(["user"]),
   passport.authenticate("jwt", { session: false }),
-  viewsController.renderProducts
+  viewController.renderProducts
 );
 
-ViewRouter.get("/carts/:cid", viewsController.renderCart);
-ViewRouter.get("/login", viewsController.renderLogin);
-ViewRouter.get("/register", viewsController.renderRegister);
+ViewRouter.get("/carts/:cid", viewController.renderCart);
+ViewRouter.get("/login", viewController.renderLogin);
+ViewRouter.get("/register", viewController.renderRegister);
 ViewRouter.get(
   "/realtimeproducts",
   checkUserRole(["admin"]),
-  viewsController.renderRealTimeProducts
+  viewController.renderRealTimeProducts
 );
-ViewRouter.get("/chat", checkUserRole(["user"]), viewsController.renderChat);
-ViewRouter.get("/", viewsController.renderHome);
+ViewRouter.get("/chat", checkUserRole(["user"]), viewController.renderChat);
+ViewRouter.get("/", viewController.renderHome);
 
 module.exports = ViewRouter;

@@ -2,7 +2,7 @@ const ProductModel = require("../models/product.model.js");
 const CartRepository = require("../repositories/carts.repository.js");
 const cartRepository = new CartRepository();
 
-class ViewsController {
+class ViewController {
   async renderProducts(req, res) {
     try {
       const { page = 1, limit = 3 } = req.query;
@@ -100,4 +100,4 @@ class ViewsController {
   }
 }
 
-module.exports = ViewsController;
+module.exports = ViewController;
