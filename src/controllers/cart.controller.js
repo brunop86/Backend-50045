@@ -1,11 +1,10 @@
-import CartRepository from "../repositories/carts.repository.js";
-const cartRepository = new CartRepository();
-import ProductRepository from "../repositories/products.repository.js";
+const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
-import TicketModel from "../models/tickets.model.js";
-import UserModel from "../models/user.model.js";
-import generateUniqueCode from "../utils/cartutils.js";
-import calculateTotal from "../utils/cartutils.js";
+const CartRepository = require("../repositories/carts.repository.js");
+const cartRepository = new CartRepository();
+const TicketModel = require("../models/ticket.model.js");
+const UserModel = require("../models/user.model.js");
+const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js");
 
 class CartController {
   async addCart(req, res) {
@@ -170,4 +169,4 @@ class CartController {
   }
 }
 
-export default CartController;
+module.exports = CartController;

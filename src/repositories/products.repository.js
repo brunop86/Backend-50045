@@ -1,4 +1,4 @@
-import ProductModel from "../models/products.model.js";
+const ProductModel = require("../models/product.model.js");
 
 class ProductRepository {
   async addProduct({
@@ -132,4 +132,4 @@ class ProductRepository {
   }
 }
 
-export default ProductRepository;
+module.exports = ProductRepository;

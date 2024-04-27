@@ -1,14 +1,14 @@
-import dotenv from "dotenv";
-import program from "../utils/commander.js";
+// import dotenv from "dotenv";
+// import program from "../utils/commander.js";
 
-const { mode } = program.opts();
+// const { mode } = program.opts();
 
-dotenv.config({
-  path: mode === "produccion" ? "./.env.produccion" : "./.env.desarrollo",
-});
+// dotenv.config({
+//   path: mode === "produccion" ? "./.env.produccion" : "./.env.desarrollo",
+// });
 
-const configObject = {
-  mongo_url: process.env.MONGO_URL,
-};
+// const configObject = {
+//   mongo_url: process.env.MONGO_URL,
+// };
 
-export default configObject;
+// export default configObject;

@@ -1,8 +1,8 @@
-import { Router } from "express";
-import passport from "passport";
-import UserController from "../controllers/user.controller.js";
+const express = require("express");
+const UserRouter = express.Router();
+const passport = require("passport");
+const UserController = require("../controllers/user.controller.js");
 const userController = new UserController();
-const UserRouter = Router();
 
 UserRouter.post("/register", userController.register);
 UserRouter.post("/login", userController.login);
@@ -18,4 +18,4 @@ UserRouter.get(
   userController.admin
 );
 
-export default UserRouter;
+module.exports = UserRouter;

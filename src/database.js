@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
-import configObject from "./config/config.js";
-const { mongo_url } = configObject;
+const mongoose = require("mongoose");
 
 mongoose
   //.connect(mongo_url)

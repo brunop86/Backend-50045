@@ -1,103 +1,49 @@
-import express from "express";
-import { engine } from "express-handlebars";
-import { Server } from "socket.io";
-import __dirname from "./utils.js";
-import ProductRouter from "./routes/products.router.js";
-import CartRouter from "./routes/carts.router.js";
-import ViewsRouter from "./routes/views.router.js";
-import UserRouter from "./routes/user.router.js";
-import cookieParser from "cookie-parser";
-import MongoStore from "connect-mongo";
-import passport from "passport";
-import initializePassport from "./config/passport.config.js";
-import cors from "cors";
-import "../src/database.js";
-
+const express = require("express");
 const app = express();
+const exphbs = require("express-handlebars");
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const initializePassport = require("./config/passport.config.js");
+const cors = require("cors");
+const path = require('path');
 const PUERTO = 8080;
+require("./database.js");
 
-const httpServer = app.listen(PUERTO, () => {
-  console.log(`Escuchando en http://localhost:${PUERTO}`);
-});
-
-const io = new Server(httpServer);
-
-//Express-Handlebars
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
-app.set("views", __dirname + "/views");
+const ProductsRouter = require("./routes/product.router.js");
+const CartsRouter = require("./routes/cart.router.js");
+const ViewsRouter = require("./routes/view.router.js");
+const UsersRouter = require("./routes/user.router.js");
 
 //Middleware
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
-app.use(cookieParser());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-//Passport
+//Passport 
 app.use(passport.initialize());
 initializePassport();
 app.use(cookieParser());
 
 //AuthMiddleware
-import authMiddleware from "./middleware/authmiddleware.js";
+const authMiddleware = require("./middleware/authmiddleware.js");
 app.use(authMiddleware);
 
+//Handlebars
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
+
 //Routes
-app.use("/api/products", ProductRouter);
-app.use("/api/carts", CartRouter);
-app.use("/api/users", UserRouter);
+app.use("/api/products", ProductsRouter);
+app.use("/api/carts", CartsRouter);
+app.use("/api/users", UsersRouter);
 app.use("/", ViewsRouter);
 
-io.on("connection", (socket) => {
-  console.log("New user on-line");
+const httpServer = app.listen(PUERTO, () => {
+  console.log(`Server listening at Port ${PUERTO}`);
 });
 
-app.get("/createcookie", (req, res) => {
-  res.cookie("cookie server", "This is a cookie").send("Cookie Created");
-});
-
-app.get("/deletecookie", (req, res) => {
-  res.clearCookie("cookie server").send("Cookie Deleted");
-});
-
-///Websockets:
-
-import ProductRepository from "./repositories/products.repository.js";
-const productRepository = new ProductRepository();
-import MessageModel from "./models/messages.model.js";
-
-class SocketManager {
-  constructor(httpServer) {
-    this.io = socket(httpServer);
-    this.initSocketEvents();
-  }
-
-  async initSocketEvents() {
-    this.io.on("connection", async (socket) => {
-      console.log("Un cliente se conectó");
-
-      socket.emit("products", await productRepository.getProducts());
-
-      socket.on("deleteProduct", async (id) => {
-        await productRepository.deleteProduct(id);
-        this.emitUpdatedProducts(socket);
-      });
-
-      socket.on("addProduct", async (producto) => {
-        await productRepository.addProduct(producto);
-        this.emitUpdatedProducts(socket);
-      });
-
-      socket.on("message", async (data) => {
-        await MessageModel.create(data);
-        const messages = await MessageModel.find();
-        socket.emit("message", messages);
-      });
-    });
-  }
-
-  async emitUpdatedProducts(socket) {
-    socket.emit("products", await productRepository.getProducts());
-  }
-}
+//Websockets: 
+const SocketManager = require("./sockets/socketmanager.js");
+new SocketManager(httpServer);

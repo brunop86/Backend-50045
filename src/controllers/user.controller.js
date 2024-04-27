@@ -1,8 +1,8 @@
-import UserModel from "../models/user.model.js";
-import CartModel from "../models/carts.model.js";
-import jwt from "jsonwebtoken";
-import { createHash, isValidPassword } from "../utils/hashbcryp.js";
-import UserDTO from "../dto/user.dto.js";
+const UserModel = require("../models/user.model.js");
+const CartModel = require("../models/cart.model.js");
+const jwt = require("jsonwebtoken");
+const { createHash, isValidPassword } = require("../utils/hashbcryp.js");
+const UserDTO = require("../dto/user.dto.js");
 
 class UserController {
   async register(req, res) {
@@ -97,4 +97,4 @@ class UserController {
   }
 }
 
-export default UserController;
+module.exports = UserController;

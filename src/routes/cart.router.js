@@ -1,8 +1,8 @@
-import { Router } from "express";
-const CartRouter = Router();
-import CartController from "../controllers/cart.controller.js";
+const express = require("express");
+const CartRouter = express.Router();
+const CartController = require("../controllers/cart.controller.js");
+const authMiddleware = require("../middleware/authmiddleware.js");
 const cartController = new CartController();
-import authMiddleware from "../middleware/authmiddleware.js";
 
 CartRouter.use(authMiddleware);
 
@@ -14,4 +14,4 @@ CartRouter.put("/:cid", cartController.updateCart);
 CartRouter.put("/:cid/product/:pid", cartController.updateQuantityProduct);
 CartRouter.delete("/:cid", cartController.emptyCart);
 
-export default CartRouter;
+module.exports = CartRouter;

@@ -1,5 +1,5 @@
-import ProductModel from "../models/products.model.js";
-import CartRepository from "../repositories/carts.repository.js";
+const ProductModel = require("../models/product.model.js");
+const CartRepository = require("../repositories/carts.repository.js");
 const cartRepository = new CartRepository();
 
 class ViewsController {
@@ -100,4 +100,4 @@ class ViewsController {
   }
 }
 
-export default ViewsController;
+module.exports = ViewsController;

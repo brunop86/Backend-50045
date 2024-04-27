@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
   code: {
@@ -24,4 +24,4 @@ const ticketSchema = new mongoose.Schema({
 
 const TicketModel = mongoose.model("Ticket", ticketSchema);
 
-export default TicketModel;
+module.exports = TicketModel;

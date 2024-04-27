@@ -1,4 +1,4 @@
-import UserModel from "../models/users.model.js";
+const UserModel = require("../models/user.model.js");
 
 class UserRepository {
   async findByEmail(email) {
@@ -6,4 +6,4 @@ class UserRepository {
   }
 }
 
-export default UserRepository;
+module.exports = UserRepository;

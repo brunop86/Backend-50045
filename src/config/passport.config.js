@@ -1,8 +1,8 @@
-import passport from "passport";
-import jwt from "passport-jwt";
+const passport = require("passport");
+const jwt = require("passport-jwt");
 const JWTStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
-import UserModel from "../models/user.model.js";
+const UserModel = require("../models/user.model.js");
 
 const initializePassport = () => {
   passport.use(
@@ -35,4 +35,4 @@ const cookieExtractor = (req) => {
   return token;
 };
 
-export default initializePassport;
+module.exports = initializePassport;

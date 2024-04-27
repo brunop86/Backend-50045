@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 const checkUserRole = (allowedRoles) => (req, res, next) => {
   const token = req.cookies.coderCookieToken;
@@ -21,4 +21,4 @@ const checkUserRole = (allowedRoles) => (req, res, next) => {
   }
 };
 
-export default checkUserRole;
+module.exports = checkUserRole;
