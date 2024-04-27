@@ -1,4 +1,4 @@
-<h1>Shopping Cart</h1>
+<h1>My Shopping Cart</h1>
 
 <div class="container">
   {{#each products}}
@@ -9,15 +9,15 @@
         <p class="card-text">Price: ${{this.product.totalPrice}}</p>
         <button
           onclick="deleteProduct('{{this.cartId}}', '{{this.product._id}}')"
-          class="btn btn-danger"
+          class="btn btn-primary"
         >Delete</button>
       </div>
     </div>
   {{/each}}
 </div>
 
-<button onclick="emptyCart('{{cartId}}')" class="btn btn-danger">Empty Cart</button>
-<h3 class="mt-2">Total ${{totalCompra}}</h3>
+<button onclick="emptyCart{{cartId}}')" class="btn btn-primary">Empty Cart</button>
+<h3 class="mt-2">Total ${{totalPurchase}}</h3>
 
 <script>
     function deleteProduct(cartId, productId) {
@@ -26,7 +26,7 @@
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Deleting Product Error');
+                    throw new Error('Delete Product Error');
                 }
                 location.reload();
             })

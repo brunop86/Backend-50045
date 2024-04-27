@@ -1,18 +1,17 @@
 const CartModel = require("../models/cart.model.js");
 
 class CartRepository {
-  async addCart() {
+  async addNewCart() {
     try {
       const newCart = new CartModel({ products: [] });
       await newCart.save();
       return newCart;
     } catch (error) {
-      console.log("Cart Saving Error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 
-  async getCartById(cartId) {
+  async getProductsOfCart(cartId) {
     try {
       const cart = await CartModel.findById(cartId);
       if (!cart) {
@@ -21,18 +20,18 @@ class CartRepository {
       }
       return cart;
     } catch (error) {
-      console.error("Id Match Error", error);
+      throw new Error("Error");
     }
   }
 
-  async addProductToCart(cartId, productId, quantity = 1) {
+  async addProduct(cartId, productId, quantity = 1) {
     try {
-      const cart = await this.getCartById(cartId);
-      const productFound = cart.products.find(
-        (item) => item.product.toString() === productId
+      const cart = await this.getProductsOfCart(cartId);
+      const existProduct = cart.products.find(
+        (item) => item.product._id.toString() === productId
       );
-      if (productFound) {
-        productFound.quantity += quantity;
+      if (existProduct) {
+        existProduct.quantity += quantity;
       } else {
         cart.products.push({ product: productId, quantity });
       }
@@ -40,12 +39,11 @@ class CartRepository {
       await cart.save();
       return cart;
     } catch (error) {
-      console.error("Adding Product Error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 
-  async deleteProductCart(cartId, productId) {
+  async deleteProduct(cartId, productId) {
     try {
       const cart = await CartModel.findById(cartId);
       if (!cart) {
@@ -57,12 +55,11 @@ class CartRepository {
       await cart.save();
       return cart;
     } catch (error) {
-      console.error("Cart Deleting Error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 
-  async updateCart(cartId, updatedProducts) {
+  async updateProductsInCart(cartId, updatedProducts) {
     try {
       const cart = await CartModel.findById(cartId);
       if (!cart) {
@@ -73,8 +70,7 @@ class CartRepository {
       await cart.save();
       return cart;
     } catch (error) {
-      console.error("Update Cart Error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 
@@ -85,7 +81,7 @@ class CartRepository {
         throw new Error("Cart Not Found");
       }
       const productIndex = cart.products.findIndex(
-        (item) => item.product._id.toString() === productId
+        (item) => item._id.toString() === productId
       );
       if (productIndex !== -1) {
         cart.products[productIndex].quantity = newQuantity;
@@ -96,8 +92,7 @@ class CartRepository {
         throw new Error("Product Not Found");
       }
     } catch (error) {
-      console.error("Quantity Update Error", error);
-      throw error;
+      throw new Error("Quantity Update Error");
     }
   }
 
@@ -113,8 +108,7 @@ class CartRepository {
       }
       return cart;
     } catch (error) {
-      console.error("Error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 }

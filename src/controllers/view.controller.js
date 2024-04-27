@@ -7,9 +7,11 @@ class ViewController {
     try {
       const { page = 1, limit = 3 } = req.query;
       const skip = (page - 1) * limit;
+
       const products = await ProductModel.find().skip(skip).limit(limit);
       const totalProducts = await ProductModel.countDocuments();
       const totalPages = Math.ceil(totalProducts / limit);
+
       const hasPrevPage = page > 1;
       const hasNextPage = page < totalPages;
 
@@ -17,6 +19,7 @@ class ViewController {
         const { _id, ...rest } = product.toObject();
         return { id: _id, ...rest };
       });
+
       const cartId = req.user.cart.toString();
 
       res.render("products", {
@@ -30,7 +33,7 @@ class ViewController {
         cartId,
       });
     } catch (error) {
-      console.error("Loading Product Error", error);
+      console.error("Loading Products Error", error);
       res.status(500).json({
         status: "error",
         error: "Server Error",
@@ -41,7 +44,7 @@ class ViewController {
   async renderCart(req, res) {
     const cartId = req.params.cid;
     try {
-      const cart = await cartRepository.addProductToCart(cartId);
+      const cart = await cartRepository.getProductsOfCart(cartId);
 
       if (!cart) {
         console.log("Cart ID Not Found");
@@ -65,12 +68,12 @@ class ViewController {
       });
 
       res.render("carts", {
-        productos: productsInCart,
+        products: productsInCart,
         totalPurchase,
         cartId,
       });
     } catch (error) {
-      console.error("Loadind Cart Error", error);
+      console.error("Loading Cart Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }
