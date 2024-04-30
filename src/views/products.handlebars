@@ -16,13 +16,14 @@
     </div>
   {{/each}}
 </div>
+<div class="d-flex justify-content-center">
 {{#if hasPrevPage}}
-  <a class="btn btn-primary m-2" href="/products?page={{prevPage}}"> Prev</a>
+  <a class="btn btn-primary m-2" style="width: 100px" href="/products?page={{prevPage}}"> Prev</a>
 {{/if}}
 {{#if hasNextPage}}
-  <a class="btn btn-primary m-2" href="/products?page={{nextPage}}"> Next </a>
+  <a class="btn btn-primary m-2" style="width: 100px" href="/products?page={{nextPage}}"> Next </a>
 {{/if}}
-
-<p class="m-4">Page {{currentPage}} of {{totalPages}} </p>
+</div>
+<p class="m-4 text-center">Page {{currentPage}} of {{totalPages}} </p>
 
 <a class="btn btn-primary m-2" href="/login">Logout</a>

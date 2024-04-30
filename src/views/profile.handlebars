@@ -5,7 +5,7 @@
   <p>Role: {{user.role}}</p>
 
   <form action="/api/users/logout" method="POST">
-    <button class="btnMios" type="submit">Logout</button>
+    <a class="btnMios" type="submit" href="/login">Logout</a>
   </form>
 
   {{#if this.isAdmin}}
