@@ -4,16 +4,47 @@ const passport = require("passport");
 const UserController = require("../controllers/user.controller.js");
 const userController = new UserController();
 
-const generateUsers = require("../utils/util.js");
+const generateProducts = require("../utils/faker.js");
 
 UserRouter.get("/mockingproducts", (req, res) => {
-  const users = [];
-
-  for(let i = 0; i < 10; i++) {
-      users.push(generateUsers());
+  const products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push(generateProducts());
   }
-  res.json(users);
-})
+  res.json(products);
+});
+
+const { generarInfoError } = require("../services-errors/info.js");
+const { EErrors } = require("../services-errors/enums.js");
+const CustomError = require("../services-errors/custom-error.js");
+
+const arrayUsuarios = [];
+
+UserRouter.post("/", async (req, res, next) => {
+  const { nombre, apellido, email } = req.body;
+  try {
+    if (!nombre || !apellido || !email) {
+      throw CustomError.crearError({
+        nombre: "Usuario Nuevo",
+        causa: generarInfoError({ nombre, apellido, email }),
+        mensaje: "Error al intentar crear un usuario",
+        codigo: EErrors.TIPO_INVALIDO,
+      });
+    }
+
+    const usuario = {
+      nombre,
+      apellido,
+      email,
+    };
+
+    arrayUsuarios.push(usuario);
+    console.log(arrayUsuarios);
+    res.send({ status: "success", payload: usuario });
+  } catch (error) {
+    next(error);
+  }
+});
 
 UserRouter.post("/register", userController.register);
 UserRouter.post("/login", userController.login);
