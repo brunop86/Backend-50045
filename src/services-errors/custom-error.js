@@ -1,14 +1,15 @@
 class CustomError {
-  static crearError({
-    nombre = "Error",
-    causa = "Desconocido",
-    mensaje,
-    codigo = 1,
+  static createError({
+    name = "Error",
+    cause = "Stranger",
+    message,
+    code = 1,
   }) {
-    const error = new Error(mensaje);
-    error.name = nombre;
-    error.causa = causa;
-    error.code = codigo;
+    const error = new Error(message);
+    error.name = name;
+    error.cause = cause;
+    error.code = code;
+
     throw error;
   }
 }

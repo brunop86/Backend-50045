@@ -1,6 +1,6 @@
 const EErrors = {
-  RUTA_ERROR: 1,
-  TIPO_INVALIDO: 2,
+  ERROR_ROUTE: 1,
+  INVALID_TYPE: 2,
   BD_ERROR: 3,
 };
 

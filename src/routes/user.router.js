@@ -14,7 +14,7 @@ UserRouter.get("/mockingproducts", (req, res) => {
   res.json(products);
 });
 
-const { generarInfoError } = require("../services-errors/info.js");
+const { generateInfoError } = require("../services-errors/info.js");
 const { EErrors } = require("../services-errors/enums.js");
 const CustomError = require("../services-errors/custom-error.js");
 
@@ -24,9 +24,9 @@ UserRouter.post("/", async (req, res, next) => {
   const { nombre, apellido, email } = req.body;
   try {
     if (!nombre || !apellido || !email) {
-      throw CustomError.crearError({
+      throw CustomError.createError({
         nombre: "Usuario Nuevo",
-        causa: generarInfoError({ nombre, apellido, email }),
+        causa: generateInfoError({ nombre, apellido, email }),
         mensaje: "Error al intentar crear un usuario",
         codigo: EErrors.TIPO_INVALIDO,
       });
