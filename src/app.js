@@ -51,3 +51,19 @@ new SocketManager(httpServer);
 //Manejo de Errores
 const manejadorError = require("./middleware/error.js");
 app.use(manejadorError);
+
+//Logger
+const addLogger = require("./utils/logger.js");
+//Middleware
+app.use(addLogger);
+//Route
+app.get("/", (req, res) => {
+  res.send("Logger Test");
+});
+//Test
+app.get("/loggerTest", (req, res) => {
+  req.logger.error("Error");
+  req.logger.warning("Warning");
+  req.logger.info("Surfing the app");
+  res.send("Logs generated!");
+});
