@@ -36,7 +36,6 @@ class CartController {
     try {
       await cartRepository.addProduct(cartId, productId, quantity);
       const cartID = req.user.cart.toString();
-
       res.redirect(`/carts/${cartID}`);
     } catch (error) {
       res.status(500).send("Error");
@@ -82,7 +81,6 @@ class CartController {
         productId,
         newQuantity
       );
-
       res.json({
         status: "success",
         message: "Product Quantity Upgraded",
@@ -97,7 +95,6 @@ class CartController {
     const cartId = req.params.cid;
     try {
       const updatedCart = await cartRepository.emptyCart(cartId);
-
       res.json({
         status: "success",
         message: "The Cart is Empty",
@@ -140,7 +137,7 @@ class CartController {
 
       res.status(200).json({ productsNotAvaliable });
     } catch (error) {
-      console.error("Purchase Error", error);
+      req.logger.error("Purchase Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }

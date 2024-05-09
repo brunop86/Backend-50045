@@ -28,7 +28,7 @@ class ProductController {
           : null,
       });
     } catch (error) {
-      console.log("Products Loading Error", error);
+      req.looger.error("Products Loading Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }
@@ -45,7 +45,7 @@ class ProductController {
         res.json(product);
       }
     } catch (error) {
-      console.log("Products Loading Error", error);
+      req.logger.error("Products Loading Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }
@@ -56,7 +56,7 @@ class ProductController {
       await productRepository.addProduct(newProduct),
         res.status(201).json({ message: "Product Added Successfully!" });
     } catch (error) {
-      console.log("Product Saving Error", error);
+      req.logger.error("Product Saving Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }
@@ -68,7 +68,7 @@ class ProductController {
       await productRepository.updateProduct(id, productUpdated);
       res.json({ message: "Product Upgraded Successfully!" });
     } catch (error) {
-      console.log("Update Error", error);
+      req.logger.error("Update Error", error);
       res.status(500).json({ error: "Server Internal Error" });
     }
   }
@@ -79,7 +79,7 @@ class ProductController {
       await productRepository.deleteProduct(id);
       res.json({ message: "Product Deleted!" });
     } catch (error) {
-      console.error("Delete Error", error);
+      req.logger.error("Delete Error", error);
       res.status(500).json({ error: "Server Internal Error" });
     }
   }

@@ -12,10 +12,8 @@ class UserController {
       if (existUser) {
         return res.status(400).send("User Registered");
       }
-
       const newCart = new CartModel();
       await newCart.save();
-
       const newUser = new UserModel({
         first_name,
         last_name,
@@ -38,7 +36,7 @@ class UserController {
 
       res.redirect("/api/users/profile");
     } catch (error) {
-      console.error(error);
+      req.logger.error("Error");
       res.status(500).send("Server Error");
     }
   }
@@ -68,13 +66,12 @@ class UserController {
 
       res.redirect("/api/users/profile");
     } catch (error) {
-      console.error(error);
+      req.logger.error("Error");
       res.status(500).send("Server Error");
     }
   }
 
   async profile(req, res) {
-    //Con DTO:
     const userDto = new UserDTO(
       req.user.first_name,
       req.user.last_name,

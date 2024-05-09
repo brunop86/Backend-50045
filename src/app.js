@@ -6,6 +6,7 @@ const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
 const cors = require("cors");
 const path = require("path");
+const config = require("./config/config.js");
 const PUERTO = 8080;
 require("./database.js");
 
@@ -53,17 +54,19 @@ const manejadorError = require("./middleware/error.js");
 app.use(manejadorError);
 
 //Logger
-const addLogger = require("./utils/logger.js");
-//Middleware
+const addLogger = require("./middleware/logger.js");
 app.use(addLogger);
-//Route
-app.get("/", (req, res) => {
-  res.send("Logger Test");
-});
+
+const isAuthenticated = require("./middleware/authmiddleware.js");
+app.use(isAuthenticated);
+
 //Test
 app.get("/loggerTest", (req, res) => {
-  req.logger.error("Error");
+  req.logger.error("Critical error");
   req.logger.warning("Warning");
-  req.logger.info("Surfing the app");
-  res.send("Logs generated!");
+  req.logger.info(
+    "We are working to fix the problem, in a moment the site will be on-line"
+  );
+
+  res.send("Logs generated");
 });

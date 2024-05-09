@@ -33,7 +33,7 @@ class ViewController {
         cartId,
       });
     } catch (error) {
-      console.error("Loading Products Error", error);
+      req.logger.error("Loading Products Error", error);
       res.status(500).json({
         status: "error",
         error: "Server Error",
@@ -47,7 +47,7 @@ class ViewController {
       const cart = await cartRepository.getProductsOfCart(cartId);
 
       if (!cart) {
-        console.log("Cart ID Not Found");
+        req.logger.warning("Cart ID Not Found");
         return res.status(404).json({ error: "Cart Not Found" });
       }
 
@@ -73,7 +73,7 @@ class ViewController {
         cartId,
       });
     } catch (error) {
-      console.error("Loading Cart Error", error);
+      req.logger.error("Loading Cart Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }
