@@ -14,9 +14,9 @@ UserRouter.get("/mockingproducts", (req, res) => {
   res.json(products);
 });
 
-const { generateInfoError } = require("../services-errors/info.js");
-const { EErrors } = require("../services-errors/enums.js");
-const CustomError = require("../services-errors/custom-error.js");
+const { generateInfoError } = require("../services/errors/info.js");
+const { EErrors } = require("../services/errors/enums.js");
+const CustomError = require("../services/errors/custom-error.js");
 
 const arrayUsuarios = [];
 
@@ -59,5 +59,9 @@ UserRouter.get(
   passport.authenticate("jwt", { session: false }),
   userController.admin
 );
+
+UserRouter.post("/requestPasswordReset", userController.requestPasswordReset);
+UserRouter.post("/reset-password", userController.resetPassword);
+UserRouter.put("/premium/:uid", userController.changeRolePremium);
 
 module.exports = UserRouter;

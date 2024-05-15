@@ -1,4 +1,4 @@
-const { EErrors } = require("../services-errors/enums.js");
+const { EErrors } = require("../services/errors/enums.js");
 
 const manejadorError = (error, req, res, next) => {
   console.log(error.causa);

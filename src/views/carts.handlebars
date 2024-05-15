@@ -16,8 +16,12 @@
   {{/each}}
 </div>
 
-<button onclick="emptyCart{{cartId}}')" class="btn btn-primary">Empty Cart</button>
+<button onclick="emptyCart('{{cartId}}')" class="btn btn-primary">Empty Cart</button>
 <h3 class="mt-2">Total ${{totalPurchase}}</h3>
+
+<form method="post" action="/api/carts/{{cartId}}/purchase">
+    <button type="submit" class="btn btn-primary">Checkout</button>
+</form>
 
 <script>
     function deleteProduct(cartId, productId) {

@@ -3,6 +3,9 @@ const CartModel = require("../models/cart.model.js");
 const jwt = require("jsonwebtoken");
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js");
 const UserDTO = require("../dto/user.dto.js");
+const { generateTokenReset } = require("../utils/tokenreset.js");
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 
 class UserController {
   async register(req, res) {
@@ -10,7 +13,7 @@ class UserController {
     try {
       const existUser = await UserModel.findOne({ email });
       if (existUser) {
-        return res.status(400).send("User Registered");
+        return res.status(400).send("User Already Registered");
       }
       const newCart = new CartModel();
       await newCart.save();
@@ -37,7 +40,7 @@ class UserController {
       res.redirect("/api/users/profile");
     } catch (error) {
       req.logger.error("Error");
-      res.status(500).send("Server Error");
+      res.status(500).send("Server Internal Error");
     }
   }
 
@@ -91,6 +94,85 @@ class UserController {
       return res.status(403).send("Access Denied");
     }
     res.render("admin");
+  }
+
+  async requestPasswordReset(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await UserModel.findOne({ email });
+      if (!user) {
+        return res.status(404).send("User Not Found");
+      }
+
+      const token = generateTokenReset();
+      user.resetToken = {
+        token: token,
+        expire: new Date(Date.now() + 3600000),
+      };
+      await user.save();
+
+      await emailManager.sendRestoreEmail(email, user.first_name, token);
+
+      res.redirect("/send-confirmation");
+    } catch (error) {
+      res.status(500).send("Server Internal Error");
+    }
+  }
+
+  async resetPassword(req, res) {
+    const { email, password, token } = req.body;
+    try {
+      const user = await UserModel.findOne({ email });
+      if (!user) {
+        return res.render("passwordchange", { error: "User Not Found" });
+      }
+
+      const resetToken = user.resetToken;
+      if (!resetToken || resetToken.token !== token) {
+        return res.render("passwordreset", {
+          error: "Restore Password Token Invalid",
+        });
+      }
+
+      const now = new Date();
+      if (now > resetToken.expire) {
+        return res.render("passwordreset", {
+          error: "Restore Password Token Expired",
+        });
+      }
+      if (isValidPassword(password, user)) {
+        return res.render("passwordchange", {
+          error: "The new password cannot be the same as the previous one",
+        });
+      }
+
+      user.password = createHash(password);
+      user.resetToken = undefined;
+      await user.save();
+
+      return res.redirect("/login");
+    } catch (error) {
+      return res
+        .status(500)
+        .render("passwordreset", { error: "Server Internal Error" });
+    }
+  }
+
+  async changeRolePremium(req, res) {
+    const { uid } = req.params;
+    try {
+      const user = await UserModel.findById(uid);
+      if (!user) {
+        return res.status(404).send("User Not Found");
+      }
+      const newRole = user.role === "user" ? "premium" : "user";
+      const updated = await UserModel.findByIdAndUpdate(uid, {
+        role: newRole,
+      });
+      res.json(updated);
+    } catch (error) {
+      res.status(500).send("Server Internal Error");
+    }
   }
 }
 

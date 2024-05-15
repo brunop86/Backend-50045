@@ -5,6 +5,7 @@ const cartRepository = new CartRepository();
 const TicketModel = require("../models/ticket.model.js");
 const UserModel = require("../models/user.model.js");
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js");
+const { sendPurchaseEmail } = require("../services/email.js");
 
 class CartController {
   async addNewCart(req, res) {
@@ -113,7 +114,7 @@ class CartController {
       const productsNotAvaliable = [];
       for (const item of products) {
         const productId = item.product;
-        const product = await productRepository.addProductInCart(productId);
+        const product = await productRepository.getProductById(productId);
         if (product.stock >= item.quantity) {
           product.stock -= item.quantity;
           await product.save();
@@ -126,18 +127,28 @@ class CartController {
         code: generateUniqueCode(),
         purchase_datetime: new Date(),
         amount: calculateTotal(cart.products),
-        purchaser: userWithCart.email,
+        purchaser: userWithCart._id,
       });
       await ticket.save();
       cart.products = cart.products.filter((item) =>
         productsNotAvaliable.some((productId) => productId.equals(item.product))
       );
-
       await cart.save();
 
-      res.status(200).json({ productsNotAvaliable });
+      await sendPurchaseEmail(
+        userWithCart.email,
+        userWithCart.first_name,
+        ticket._id
+      );
+
+      res.render("checkout", {
+        client: userWithCart.first_name,
+        email: userWithCart.email,
+        ticketNumber: ticket._id,
+      });
+      // res.status(200).json({ productsNotAvaliable });
     } catch (error) {
-      req.logger.error("Purchase Error", error);
+      console.error("Purchase Error", error);
       res.status(500).json({ error: "Server Error" });
     }
   }

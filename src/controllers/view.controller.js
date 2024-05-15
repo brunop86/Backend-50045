@@ -102,6 +102,18 @@ class ViewController {
   async renderHome(req, res) {
     res.render("home");
   }
+
+  async renderResetPassword(req, res) {
+    res.render("passwordreset");
+  }
+
+  async renderChangePassword(req, res) {
+    res.render("passwordchange");
+  }
+
+  async renderConfirmation(req, res) {
+    res.render("send-confirmation");
+  }
 }
 
 module.exports = ViewController;

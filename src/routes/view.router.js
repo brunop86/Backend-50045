@@ -23,4 +23,8 @@ ViewRouter.get(
 ViewRouter.get("/chat", checkUserRole(["user"]), viewController.renderChat);
 ViewRouter.get("/", viewController.renderHome);
 
+ViewRouter.get("/reset-password", viewController.renderResetPassword);
+ViewRouter.get("/password", viewController.renderChangePassword);
+ViewRouter.get("/send-confirmation", viewController.renderConfirmation);
+
 module.exports = ViewRouter;
