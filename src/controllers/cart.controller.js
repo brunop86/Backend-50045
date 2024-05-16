@@ -5,7 +5,7 @@ const cartRepository = new CartRepository();
 const TicketModel = require("../models/ticket.model.js");
 const UserModel = require("../models/user.model.js");
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js");
-const { sendPurchaseEmail } = require("../services/email.js");
+const sendPurchaseEmail = require("../services/email.js");
 
 class CartController {
   async addNewCart(req, res) {
@@ -135,7 +135,7 @@ class CartController {
       );
       await cart.save();
 
-      await sendPurchaseEmail(
+      await new sendPurchaseEmail(
         userWithCart.email,
         userWithCart.first_name,
         ticket._id
