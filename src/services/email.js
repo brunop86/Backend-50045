@@ -38,10 +38,9 @@ class EmailManager {
         html: `
                     <h1>Password Restore</h1>
                     <p>Hello ${first_name}!</p>
-                    <p>You asked to reset your password. We send you the confirmation code</p>
-                    <strong> ${token} </strong>
+                    <p>You asked to reset your password. We send you the confirmation code:<strong> ${token} </strong></p>
                     <p> This code expires in 1 hour </p>
-                    <p> Click the following link to </p><a href="http://localhost:8080/password"> Reset Password </a>
+                    <p> Click the following link to <a href="http://localhost:8080/password"> Reset Password </a></p>
                 `,
       };
       await this.transporter.sendMail(mailOptions);
