@@ -11,16 +11,19 @@ ViewRouter.get(
   passport.authenticate("jwt", { session: false }),
   viewController.renderProducts
 );
-
 ViewRouter.get("/carts/:cid", viewController.renderCart);
 ViewRouter.get("/login", viewController.renderLogin);
 ViewRouter.get("/register", viewController.renderRegister);
 ViewRouter.get(
   "/realtimeproducts",
-  checkUserRole(["admin"]),
+  checkUserRole(["admin", "premium"]),
   viewController.renderRealTimeProducts
 );
-ViewRouter.get("/chat", checkUserRole(["user"]), viewController.renderChat);
+ViewRouter.get(
+  "/chat",
+  checkUserRole(["admin", "premium"]),
+  viewController.renderChat
+);
 ViewRouter.get("/", viewController.renderHome);
 
 ViewRouter.get("/reset-password", viewController.renderResetPassword);

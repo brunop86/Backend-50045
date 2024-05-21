@@ -9,6 +9,7 @@ class ProductRepository {
     stock,
     category,
     thumbnails,
+    owner,
   }) {
     try {
       if (!title || !description || !code || !price || !stock || !category) {
@@ -21,6 +22,7 @@ class ProductRepository {
         console.log("The code must be unique");
         return;
       }
+      console.log("Owner", owner);
 
       const newProduct = new ProductModel({
         title,
@@ -32,6 +34,7 @@ class ProductRepository {
         category,
         status: true,
         thumbnails: thumbnails || [],
+        owner,
       });
       await newProduct.save();
     } catch (error) {
@@ -113,7 +116,7 @@ class ProductRepository {
       return product;
     } catch (error) {
       console.log("Update error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 
@@ -125,9 +128,10 @@ class ProductRepository {
         return null;
       }
       console.log("Product deleted");
+      return product;
     } catch (error) {
       console.log("Deleting error", error);
-      throw error;
+      throw new Error("Error");
     }
   }
 }

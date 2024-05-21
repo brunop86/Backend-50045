@@ -1,4 +1,6 @@
 const socket = io();
+const role = document.getElementById("role").textContent;
+const email = document.getElementById("email").textContent;
 
 socket.on("products", (data) => {
   renderProducts(data);
@@ -40,6 +42,9 @@ document.getElementById("btnSend").addEventListener("click", () => {
 });
 
 const addProduct = () => {
+  const role = document.getElementById("role").textContent;
+  const email = document.getElementById("email").textContent;
+  const owner = role === "premium" ? email : "admin";
   const product = {
     title: document.getElementById("title").value,
     description: document.getElementById("description").value,
@@ -49,6 +54,7 @@ const addProduct = () => {
     categoty: document.getElementById("category").value,
     thumbnails: document.getElementById("thumbnails").value,
     status: document.getElementById("status").value === "true",
+    owner,
   };
   socket.emit("addProduct", product);
 };
