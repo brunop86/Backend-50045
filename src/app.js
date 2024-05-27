@@ -9,6 +9,8 @@ const path = require("path");
 const config = require("./config/config.js");
 const PUERTO = 8080;
 require("./database.js");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUiExpress = require("swagger-ui-express");
 
 const ProductsRouter = require("./routes/product.router.js");
 const CartsRouter = require("./routes/cart.router.js");
@@ -70,3 +72,21 @@ app.get("/loggerTest", (req, res) => {
 
   res.send("Logs generated");
 });
+
+// Documentacion con Swagger
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Tennis World Website Documentation ",
+      description:
+        "Largest Online Tennis Retailer in the World, Free 2-day shipping on orders over $50.",
+    },
+  },
+  apis: ["./src/docs/**/*.yaml"],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
