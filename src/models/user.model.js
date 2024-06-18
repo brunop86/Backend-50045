@@ -33,6 +33,16 @@ const userSchema = mongoose.Schema({
     token: String,
     expire: Date,
   },
+  documents: [
+    {
+      name: String,
+      reference: String,
+    },
+  ],
+  last_connection: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const UserModel = mongoose.model("user", userSchema);

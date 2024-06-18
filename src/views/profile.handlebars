@@ -11,6 +11,9 @@
   {{#if this.isAdmin}}
     <a class="btnMios" href="/realtimeproducts">Edit Products</a>
   {{else}}
+    {{#if this.isPremium}}
+      <a class="btnMios" href="/realtimeproducts">Premium User</a>
+    {{/if}}
     <a class="btnMios" href="/chat">Live Chat</a>
     <a class="btnMios" href="/products">Store</a>
   {{/if}}

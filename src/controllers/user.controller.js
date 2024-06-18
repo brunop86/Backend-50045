@@ -6,12 +6,14 @@ const UserDTO = require("../dto/user.dto.js");
 const { generateTokenReset } = require("../utils/tokenreset.js");
 const EmailManager = require("../services/email.js");
 const emailManager = new EmailManager();
+const UserRepository = require("../repositories/users.repository.js");
+const userRepository = new UserRepository();
 
 class UserController {
   async register(req, res) {
     const { first_name, last_name, email, password, age } = req.body;
     try {
-      const existUser = await UserModel.findOne({ email });
+      const existUser = await userRepository.findByEmail(email);
       if (existUser) {
         return res.status(400).send("User Already Registered");
       }
@@ -26,7 +28,7 @@ class UserController {
         age,
       });
 
-      await newUser.save();
+      await userRepository.create(newUser);
 
       const token = jwt.sign({ user: newUser }, "coderhouse", {
         expiresIn: "1h",
@@ -47,7 +49,7 @@ class UserController {
   async login(req, res) {
     const { email, password } = req.body;
     try {
-      const userFound = await UserModel.findOne({ email });
+      const userFound = await userRepository.findByEmail(email);
 
       if (!userFound) {
         return res.status(401).send("Not Valid User");
@@ -62,6 +64,9 @@ class UserController {
         expiresIn: "1h",
       });
 
+      userFound.last_connection = new Date();
+      await userFound.save();
+
       res.cookie("coderCookieToken", token, {
         maxAge: 3600000,
         httpOnly: true,
@@ -75,16 +80,31 @@ class UserController {
   }
 
   async profile(req, res) {
-    const userDto = new UserDTO(
-      req.user.first_name,
-      req.user.last_name,
-      req.user.role
-    );
-    const isAdmin = req.user.role === "admin";
-    res.render("profile", { user: userDto, isAdmin });
+    try {
+      const isPremium = req.user.role === "premium";
+      const userDto = new UserDTO(
+        req.user.first_name,
+        req.user.last_name,
+        req.user.role
+      );
+      const isAdmin = req.user.role === "admin";
+      res.render("profile", { user: userDto, isPremium, isAdmin });
+    } catch (error) {
+      res.status(500).send("Internal Server Error");
+    }
   }
 
   async logout(req, res) {
+    if (req.user) {
+      try {
+        req.user.last_connection = new Date();
+        await req.user.save();
+      } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+    }
     res.clearCookie("coderCookieToken");
     res.redirect("/login");
   }
@@ -99,7 +119,7 @@ class UserController {
   async requestPasswordReset(req, res) {
     const { email } = req.body;
     try {
-      const user = await UserModel.findOne({ email });
+      const user = await userRepository.findByEmail(email);
       if (!user) {
         return res.status(404).send("User Not Found");
       }
@@ -109,7 +129,7 @@ class UserController {
         token: token,
         expire: new Date(Date.now() + 3600000),
       };
-      await user.save();
+      await userRepository.save(user);
 
       await emailManager.sendRestoreEmail(email, user.first_name, token);
 
@@ -122,7 +142,7 @@ class UserController {
   async resetPassword(req, res) {
     const { email, password, token } = req.body;
     try {
-      const user = await UserModel.findOne({ email });
+      const user = await userRepository.findByEmail(email);
       if (!user) {
         return res.render("passwordchange", { error: "User Not Found" });
       }
@@ -148,7 +168,7 @@ class UserController {
 
       user.password = createHash(password);
       user.resetToken = undefined;
-      await user.save();
+      await userRepository.save(user);
 
       return res.redirect("/login");
     } catch (error) {
@@ -161,15 +181,31 @@ class UserController {
   async changeRolePremium(req, res) {
     const { uid } = req.params;
     try {
-      const user = await UserModel.findById(uid);
+      const user = await userRepository.findById(uid);
       if (!user) {
         return res.status(404).send("User Not Found");
       }
+
+      const requiredDocumentation = [
+        "Identification",
+        "Proof of Address",
+        "Proof of Account Status",
+      ];
+
+      const userDocuments = user.documents.map((doc) => doc.name);
+
+      const hasDocumentation = requiredDocumentation.every((doc) =>
+        userDocuments.includes(doc)
+      );
+
+      if (!hasDocumentation) {
+        return res
+          .status(400)
+          .send("The user must complete all required documentation");
+      }
+
       const newRole = user.role === "user" ? "premium" : "user";
-      const updated = await UserModel.findByIdAndUpdate(uid, {
-        role: newRole,
-      });
-      res.json(updated);
+      res.send(newRole);
     } catch (error) {
       res.status(500).send("Server Internal Error");
     }

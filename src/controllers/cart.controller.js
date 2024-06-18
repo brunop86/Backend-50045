@@ -2,13 +2,15 @@ const ProductRepository = require("../repositories/products.repository.js");
 const productRepository = new ProductRepository();
 const CartRepository = require("../repositories/carts.repository.js");
 const cartRepository = new CartRepository();
-const TicketModel = require("../models/ticket.model.js");
+const TicketRepository = require("../repositories/ticket.repository.js");
+const ticketRepository = new TicketRepository();
 const UserModel = require("../models/user.model.js");
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js");
-const sendPurchaseEmail = require("../services/email.js");
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 
 class CartController {
-  async addNewCart(req, res) {
+  async newCart(req, res) {
     try {
       const newCart = await cartRepository.addNewCart();
       res.json(newCart);
@@ -123,19 +125,16 @@ class CartController {
         }
       }
       const userWithCart = await UserModel.findOne({ cart: cartId });
-      const ticket = new TicketModel({
+      const ticket = await ticketRepository.createTicket({
         code: generateUniqueCode(),
         purchase_datetime: new Date(),
         amount: calculateTotal(cart.products),
         purchaser: userWithCart._id,
+        products: cart.products,
       });
-      await ticket.save();
-      cart.products = cart.products.filter((item) =>
-        productsNotAvaliable.some((productId) => productId.equals(item.product))
-      );
-      await cart.save();
+      await cartRepository.emptyCart(cartId);
 
-      await new sendPurchaseEmail(
+      await emailManager.sendPurchaseEmail(
         userWithCart.email,
         userWithCart.first_name,
         ticket._id

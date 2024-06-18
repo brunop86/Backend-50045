@@ -6,7 +6,7 @@ const cartController = new CartController();
 
 CartRouter.use(authMiddleware);
 
-CartRouter.post("/", cartController.addNewCart);
+CartRouter.post("/", cartController.newCart);
 CartRouter.get("/:cid", cartController.getProductsOfCart);
 CartRouter.post("/:cid/product/:pid", cartController.addProductInCart);
 CartRouter.delete("/:cid/product/:pid", cartController.deleteProductOfCart);
