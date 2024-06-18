@@ -1,4 +1,5 @@
 const CartModel = require("../models/cart.model.js");
+const TicketModel = require("../models/ticket.model.js");
 
 class CartRepository {
   async addNewCart() {
@@ -107,6 +108,21 @@ class CartRepository {
         throw new Error("Cart Not Found");
       }
       return cart;
+    } catch (error) {
+      throw new Error("Error");
+    }
+  }
+
+  async addProductsToTicket(products, purchaser) {
+    try {
+      const ticket = new TicketModel({
+        code: generateUniqueCode(),
+        purchase_datetime: new Date(),
+        amount: calculateTotal(products),
+        purchaser,
+      });
+      await ticket.save();
+      return ticket;
     } catch (error) {
       throw new Error("Error");
     }

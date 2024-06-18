@@ -114,6 +114,10 @@ class ViewController {
   async renderConfirmation(req, res) {
     res.render("send-confirmation");
   }
+
+  async renderPremium(req, res) {
+    res.render("panel-premium");
+}
 }
 
 module.exports = ViewController;

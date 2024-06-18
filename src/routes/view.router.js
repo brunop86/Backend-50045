@@ -29,5 +29,6 @@ ViewRouter.get("/", viewController.renderHome);
 ViewRouter.get("/reset-password", viewController.renderResetPassword);
 ViewRouter.get("/password", viewController.renderChangePassword);
 ViewRouter.get("/send-confirmation", viewController.renderConfirmation);
+ViewRouter.get("/panel-premium", viewController.renderPremium);
 
 module.exports = ViewRouter;
