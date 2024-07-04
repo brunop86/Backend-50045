@@ -106,9 +106,24 @@ label {
   border-radius: 5px;
   box-sizing: border-box;
 }
-.home-description .imagen-principal {
+.home-description {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  margin-top: 8rem;
+}
+.home-description h2 {
+  position: absolute;
+  top: 400px;
+  width: 100vw;
+  color: white;
+  font-size: 3.8rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  padding-left: 2rem;
+  text-shadow: 2px 2px 2px black;
+}
+.imagen-principal {
   width: 100vw;
 }
