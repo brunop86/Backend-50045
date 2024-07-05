@@ -3,6 +3,7 @@
 * {
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
 }
 
 body {
@@ -126,4 +127,34 @@ label {
 }
 .imagen-principal {
   width: 100vw;
+}
+
+/*SECCION SOCIAL MEDIA*/
+
+.container-social-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: #333;
+}
+.container-social-media .img-logo {
+  height: 1.8rem;
+}
+.container-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  background-color: #333;
+}
+.container-footer h5 {
+  color: #CCC9DC;
+  font-size: 0.8rem;
+  margin: 0;
 }
