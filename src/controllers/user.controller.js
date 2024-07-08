@@ -8,6 +8,9 @@ const EmailManager = require("../services/email.js");
 const emailManager = new EmailManager();
 const UserRepository = require("../repositories/users.repository.js");
 const userRepository = new UserRepository();
+const nodemailer = require("nodemailer");
+const passport = require("passport");
+
 
 class UserController {
   async register(req, res) {
@@ -209,6 +212,86 @@ class UserController {
     } catch (error) {
       res.status(500).send("Server Internal Error");
     }
+  }
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await UserModel.find({}, "first_name last_name email role");
+      res.json(users);
+    } catch (error) {
+      res.status(500).send("Internal server error");
+    }
+  }
+
+  async deleteInactiveUsers(req, res) {
+    try {
+      const thresholdDate = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+      const usersToDelete = await UserModel.find({
+        last_connection: { $lt: thresholdDate },
+      });
+
+      usersToDelete.forEach((user) => {
+        emailManager.sendDeletionEmail(user.email, user.first_name);
+      });
+
+      await UserModel.deleteMany({ last_connection: { $lt: thresholdDate } });
+      res.json({ message: "Inactive Users Deleted" });
+    } catch (error) {
+      res.status(500).send("Internal server error");
+    }
+  }
+
+  async updateUserRole(req, res) {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    try {
+      const user = await UserModel.findById(id);
+      if (!user) {
+        return res.status(404).send("User Not Found");
+      }
+      user.role = role;
+      await user.save();
+      res.json({ message: "Role updated successfully" });
+    } catch (error) {
+      res.status(500).send("Internal server error");
+    }
+  }
+
+  async deleteUser(req, res) {
+    const { id } = req.params;
+
+    try {
+      const user = await userRepository.findById(id);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+
+      await user.remove();
+      res.json({ message: "User deleted" });
+    } catch (error) {
+      console.error("Error deleting user", error);
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+
+  async sendDeletionEmail(email) {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "tu-email@gmail.com",
+        pass: "tu-contraseña",
+      },
+    });
+
+    const mailOptions = {
+      from: "tu-email@gmail.com",
+      to: email,
+      subject: "Inactive Account Deleted",
+      text: "Your account has been deleted due to inactivity in the last 2 days",
+    };
+
+    return transporter.sendMail(mailOptions);
   }
 }
 

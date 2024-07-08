@@ -32,6 +32,20 @@ class UserRepository {
       throw error;
     }
   }
+
+  async getAllUsers() {
+    return UserModel.find({}, "first_name last_name email role");
+  }
+
+  async deleteInactiveUsers() {
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    const usersToDelete = await UserModel.find({
+      last_connection: { $lt: twoDaysAgo },
+    });
+    await UserModel.deleteMany({ last_connection: { $lt: twoDaysAgo } });
+    return usersToDelete;
+  }
 }
 
 module.exports = UserRepository;

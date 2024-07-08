@@ -6,6 +6,11 @@ const userController = new UserController();
 const UserRepository = require("../repositories/users.repository.js");
 const userRepository = new UserRepository();
 
+UserRouter.get("/", userController.getAllUsers);
+UserRouter.delete("/", userController.deleteInactiveUsers);
+UserRouter.put("/:id/role", userController.updateUserRole);  
+UserRouter.delete("/:id", userController.deleteUser);
+
 UserRouter.post("/register", userController.register);
 UserRouter.post("/login", userController.login);
 UserRouter.get(

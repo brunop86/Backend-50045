@@ -15,11 +15,12 @@ class EmailManager {
   async sendPurchaseEmail(email, first_name, ticket) {
     try {
       const mailOptions = {
-        from: "Coder Test <coderhouse50015@gmail.com>",
+        from: "Tennis World <coderhouse50015@gmail.com>",
         to: email,
         subject: "Purchase Confirmation",
         html: `
                     <h1>Congratulations ${first_name}!</h1>
+                    <p>Thanks for your purchase!</p>
                     <p>Purchase Order: ${ticket}</p>
                 `,
       };
@@ -32,7 +33,7 @@ class EmailManager {
   async sendRestoreEmail(email, first_name, token) {
     try {
       const mailOptions = {
-        from: "Coder Test <coderhouse50015@gmail.com>",
+        from: "Tennis World <coderhouse50015@gmail.com>",
         to: email,
         subject: "Password Restore",
         html: `
