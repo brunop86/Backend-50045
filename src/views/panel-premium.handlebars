@@ -1,38 +1,38 @@
 <h1>Premium Users Panel</h1>
 
-<h2>Add New Product</h2>
-<form id="productForm">
+<h2 class="text-center">Add New Product</h2>
+<form class="form" id="productForm">
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required>
+    <input class="inputLogin" type="text" id="title" name="title" required>
 
     <label for="description">Description:</label>
-    <textarea id="description" name="description" required></textarea>
+    <textarea class="inputLogin" id="description" name="description" required></textarea>
 
     <label for="price">Price:</label>
-    <input type="number" id="price" name="price" required>
+    <input class="inputLogin" type="number" id="price" name="price" required>
 
     <label for="img">Image:</label>
-    <input type="text" id="img" name="img" placeholder="URL de la imagen">
+    <input class="inputLogin" type="text" id="img" name="img" placeholder="URL de la imagen">
 
     <label for="code">Code:</label>
-    <input type="text" id="code" name="code" required>
+    <input class="inputLogin" type="text" id="code" name="code" required>
 
     <label for="stock">Stock:</label>
-    <input type="number" id="stock" name="stock" required>
+    <input class="inputLogin" type="number" id="stock" name="stock" required>
 
     <label for="category">Category:</label>
-    <input type="text" id="category" name="category" required>
+    <input class="inputLogin" type="text" id="category" name="category" required>
 
     <label for="status">Status:</label>
-    <select id="status" name="status">
+    <select class="inputLogin" id="status" name="status">
         <option value="true">Active</option>
         <option value="false">Inactive</option>
     </select>
 
-    <button type="submit">Add Product</button>
+    <button type="submit" class="btn btn-primary">Add Product</button>
 </form>
 
-<h2>Your Products</h2>
+<h2 class="text-center">Your Products</h2>
 <ul id="userProductsList">
     {{#each userProducts}}
     <li>

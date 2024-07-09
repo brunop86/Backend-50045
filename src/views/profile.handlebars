@@ -1,7 +1,7 @@
 <h1>My Profile</h1>
 
 <div class="profile-card">
-  <p>Welcome, {{user.nombre}} {{user.apellido}}!</p>
+  <p>Welcome, {{user.firstName}} {{user.lastName}}!</p>
   <p>Role: {{user.role}}</p>
 
   <form action="/api/users/logout" method="POST">
@@ -12,7 +12,7 @@
     <a class="btnMios" href="/realtimeproducts">Edit Products</a>
   {{else}}
     {{#if this.isPremium}}
-      <a class="btnMios" href="/realtimeproducts">Premium User</a>
+      <a class="btnMios" href="/panel-premium">Premium User</a>
     {{/if}}
     <a class="btnMios" href="/chat">Live Chat</a>
     <a class="btnMios" href="/products">Store</a>
